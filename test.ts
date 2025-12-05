@@ -12,7 +12,7 @@ await melooly.saveAllComponents();
 let clone = new Melooly(melooly.toSavefile());
 clone.addComponent('nose', 'demo', readFileSync('./demo.canvas', {encoding: 'utf-8'}))
 clone.components.nose = {color: '#00f', value: 'demo'}
-melooly.copySelectedComponents(clone);
+melooly.copySavedComponents(clone);
 console.log(`Name: `, clone.name);
 console.log(`Components: `, clone.components);
 

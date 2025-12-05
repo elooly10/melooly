@@ -23,14 +23,14 @@ let components = {
         },
         {
             front: 'A/normal',
-            back: 'A/small'
-        },
-        {
-            front: 'A/normal',
             back: 'A/short'
         },
         {
             front: 'A/normal',
+            back: 'A/small'
+        },
+        {
+            front: 'A/raised',
             back: 'A/very small'
         },
         {
@@ -39,11 +39,11 @@ let components = {
         },
         {
             front: 'A/small',
-            back: 'A/small'
+            back: 'A/short'
         },
         {
             front: 'A/small',
-            back: 'A/short'
+            back: 'A/small'
         },
         {
             front: 'A/small',
@@ -194,7 +194,7 @@ let components = {
             '#A3662966',
             '#C651394D'
         ],
-        values: ['', 'blush']
+        values: ['blush', '']
     },
     eyes: {
         colors: [

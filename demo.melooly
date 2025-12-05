@@ -1,5 +1,5 @@
-Greg	#00BFFF	P
-#604020	D/normal	D/long
+demo00	#00BFFF	M
+hair/back	#604020	D/long
 head	#FFD7BF	normal
 blush	#000	
 mole	#0D0D0C	
@@ -8,3 +8,4 @@ nose		normal
 mouth	#BF4060	smile2
 glasses	#0C0C0D	
 moustache	#604020	
+hair/front	#604020	D/normal

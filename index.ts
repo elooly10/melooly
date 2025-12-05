@@ -34,15 +34,6 @@ class Melooly {
                 this.name = contents[0];
                 this.favoriteColor = contents[1];
                 this.gender = contents[2] as typeof this.gender ?? 'P';
-            } else if (i == 1) {
-                this.components['hair/back'] = {
-                    color: contents[0],
-                    value: contents[2]
-                }
-                this.components['hair/front'] = {
-                    color: contents[0],
-                    value: contents[1]
-                }
             } else {
                 // contents: [name, color, component]
                 this.components[contents[0] as layer] = {
@@ -52,7 +43,7 @@ class Melooly {
             }
         });
     }
-    /** file: Melooly save file, from Melooly.toSaveFile */
+    /** Creates a melooly from a melooly save file */
     constructor(file: string) {
         this.importFile(file)
     }
@@ -128,7 +119,7 @@ class Melooly {
         }
     }
     /** Apply saved components to another melooly */
-    public copySelectedComponents(clone: Melooly) {
+    public copySavedComponents(clone: Melooly) {
         Object.entries(this.renders).forEach((layer) => {
             clone.renders[layer[0] as layer] = { ...layer[1], ...clone.renders[layer[0] as layer] }
         })
@@ -152,17 +143,17 @@ class Melooly {
     }
     /** Convert melooly to string representation, which can be used to instantiate more Melooly classes */
     public toSavefile() {
-        let text = `${this.name}\t${this.favoriteColor}\t${this.gender}\n${this.components["hair/front"].color}\t${this.components["hair/front"].value}\t${this.components["hair/back"].value}\n`;
+        let text = `${this.name}\t${this.favoriteColor}\t${this.gender}\n`;
 
-        text += Object.entries(this.components).map((component) => {
-            return `${component[0]}\t${component[1].color ?? ""}\t${component[1].value}`
+        text += this.renderingOrder.map((layer) => {
+            return `${layer}\t${this.components[layer].color ?? ""}\t${this.components[layer].value}`
         }).join("\n");
         return text;
     }
     /** Clone this melooly */
     public clone() {
         let clone = new Melooly(this.toSavefile())
-        this.copySelectedComponents(clone);
+        this.copySavedComponents(clone);
         return clone;
     }
 
