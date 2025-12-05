@@ -1,4 +1,4 @@
-import components from "./components";
+import components from "./components.js";
 declare class MeloolyLauncher {
     private key;
     constructor(key: string);

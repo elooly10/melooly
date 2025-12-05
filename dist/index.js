@@ -1,4 +1,4 @@
-import components from "./components";
+import components from "./components.js";
 import { applyCFF } from "canvasfileformat";
 class MeloolyLauncher {
     constructor(key) {

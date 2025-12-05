@@ -1,4 +1,4 @@
-import { Melooly } from "./index";
+import { Melooly } from "./index.js";
 import { readFileSync, writeFileSync } from "fs";
 import { Canvas } from "canvas";
 import terminalImage from 'terminal-image';
