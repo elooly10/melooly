@@ -165,6 +165,12 @@ class Melooly {
         this.copySelectedComponents(clone);
         return clone;
     }
+
+    public applyHairColor(color: string) {
+        if(this.components.moustache.color == this.components["hair/back"].color) this.components.moustache.color = color;
+        this.components["hair/back"].color = color;
+        this.components["hair/front"].color = color;
+    }
 }
 
 export {
