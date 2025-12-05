@@ -1,0 +1,23 @@
+{
+  "name": "melooly",
+  "version": "0.0.1",
+  "description": "TBD",
+  "license": "ISC",
+  "author": "elooly",
+  "type": "commonjs",
+  "main": "./dist/index.js",
+  "scripts": {
+    "test": "ts-node test.ts",
+    "prepare": "tsc"
+  },
+  "devDependencies": {
+    "canvas": "^3.2.0",
+    "prettier": "^3.0.0",
+    "terminal-image": "^4.1.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "canvasfileformat": "github:elooly10/canvasFileFormat"
+  }
+}
