@@ -9,7 +9,8 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
-  "noEmit": false
+    "noEmit": false,
+    "declaration": true
   },
   "include": ["**/*.ts"]
 }
