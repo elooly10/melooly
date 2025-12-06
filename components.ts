@@ -6,7 +6,7 @@ let hairColors = [
     '#604020',
     '#804000',
     '#A87E00',
-    '#FFDF80',
+    '#DFCFA0',
     '#A80000',
     '#A82A00',
     '#879292',
@@ -177,7 +177,7 @@ let components = {
             '#FFD7BF',
             '#FFE5CC'
         ],
-        values: ['normal', 'high', 'narrow', 'low', 'lowWide', 'wide', 'noChinHigh', 'noChin']
+        values: ['normal', 'narrow', 'low', 'lowWide', 'wide', 'high', 'noChinHigh', 'noChin']
     },
     mole: {
         colors: [

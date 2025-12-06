@@ -72,7 +72,6 @@ class Melooly {
      * Canvas needs to be at least 270px × specified scale for component to fit.
      */
     public drawComponent(component: { layer: layer, name: string, color: string }, canvas: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D, scale: number = 1) {
-        console.log(component)
         //Draw it!
         let render = this.renders[component.layer]?.[component.name];
         if(!render) {
