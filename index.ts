@@ -96,7 +96,7 @@ class Melooly {
     public async fetchComponent(layer: layer, value: string) {
         // Fetch from the web
         try {
-            let result = await fetch(`http://melooly.vercel.app/components/${layer}/${value}.canvas`)
+            let result = await fetch(`https://melooly.vercel.app/components/${layer}/${value}.canvas`)
             if (!result.ok) throw { status: result.status, description: result.statusText, url: result.url }
             let render = await result.text()
             // Add to renders 
