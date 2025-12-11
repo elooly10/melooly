@@ -1,13 +1,13 @@
 {
   "name": "melooly",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "TBD",
   "license": "ISC",
   "author": "elooly",
   "type": "module",
   "main": "./dist/index.js",
   "scripts": {
-    "test": "tsc && node ./dist/test.js",
+    "test": "tsc && node ./dist/test/index.js",
     "prepare": "tsc"
   },
   "devDependencies": {

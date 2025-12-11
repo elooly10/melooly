@@ -205,7 +205,7 @@ let components = {
             '#7E692A',
             '#7E542A',
             '#604020',
-            '#93B3BE',
+            '#608F9F',
             '#0D0D0C'
         ],
         values: ['normal', 'oval', 'round', 'circle', 'tired', 'wink', 'blink']

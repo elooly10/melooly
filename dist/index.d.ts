@@ -22,6 +22,10 @@ declare class Melooly {
     favoriteColor: string;
     /** Import savefile to melooly */
     private importFile;
+    /** URL all Meloolies load components from. Defaults to melooly website.
+     * Layer is represented with \l, and value \v.
+     */
+    static componentURL: string;
     /** Creates a melooly from a melooly save file */
     constructor(file: string);
     readonly renderingOrder: layer[];

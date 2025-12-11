@@ -70,7 +70,6 @@ class Melooly {
      * Canvas needs to be at least 270px × specified scale for component to fit.
      */
     drawComponent(component, canvas, scale = 1) {
-        console.log(component);
         //Draw it!
         let render = this.renders[component.layer]?.[component.name];
         if (!render) {
@@ -89,7 +88,7 @@ class Melooly {
     async fetchComponent(layer, value) {
         // Fetch from the web
         try {
-            let result = await fetch(`https://melooly.vercel.app/components/${layer}/${value}.canvas`);
+            let result = await fetch(Melooly.componentURL.replaceAll('\\l', layer).replaceAll('\\v', value));
             if (!result.ok)
                 throw { status: result.status, description: result.statusText, url: result.url };
             let render = await result.text();
@@ -111,9 +110,11 @@ class Melooly {
     }
     /** Save drawing instructions for currently used components */
     async saveSelectedComponents() {
+        let componentPromises = [];
         for (const entry of Object.entries(this.components)) {
-            await this.fetchComponent(entry[0], entry[1].value);
+            componentPromises.push(this.fetchComponent(entry[0], entry[1].value));
         }
+        await Promise.allSettled(componentPromises);
     }
     /** Apply saved components to another melooly */
     copySavedComponents(clone) {
@@ -125,16 +126,19 @@ class Melooly {
     async saveAllComponents() {
         // Handle non-hair features
         let entries = Object.entries(components);
+        let componentPromises = [];
         for (let entry of entries) {
             if (entry[0] != 'hair') {
-                await Promise.all(entry[1].values.map((value) => this.fetchComponent(entry[0], value)));
+                componentPromises.push(...entry[1].values.map((value) => this.fetchComponent(entry[0], value)));
             }
         }
         // Handle hair
         let hairFronts = new Set(components.hair.values.map(e => e.front));
         let hairBacks = new Set(components.hair.values.map(e => e.back));
-        await Promise.all(new Array(...hairFronts).map((value) => this.fetchComponent('hair/front', value)));
-        await Promise.all(new Array(...hairBacks).map((value) => (this.fetchComponent('hair/back', value))));
+        componentPromises.push(...new Array(...hairFronts).map((value) => this.fetchComponent('hair/front', value)));
+        componentPromises.push(...new Array(...hairBacks).map((value) => (this.fetchComponent('hair/back', value))));
+        // Load!
+        await Promise.allSettled(componentPromises);
     }
     /** Convert melooly to string representation, which can be used to instantiate more Melooly classes */
     toSavefile() {
@@ -157,4 +161,8 @@ class Melooly {
         this.components["hair/front"].color = color;
     }
 }
+/** URL all Meloolies load components from. Defaults to melooly website.
+ * Layer is represented with \l, and value \v.
+ */
+Melooly.componentURL = 'https://melooly.vercel.app/components/\\l/\\v.canvas';
 export { components, MeloolyLauncher, Melooly };
