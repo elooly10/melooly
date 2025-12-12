@@ -22,7 +22,7 @@ async function test() {
 test();
 async function drawSample(melooly, scale, items) {
     let canvas = new Canvas(270 * scale, 270 * scale);
-    let context = canvas.getContext('2d');
+    let context = canvas.getContext('2d'); // Convert to HTML canvas
     context.fillStyle = melooly.favoriteColor;
     context.fillRect(0, 0, 270 * scale, 270 * scale);
     melooly.draw(context, scale, items);

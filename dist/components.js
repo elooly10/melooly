@@ -135,12 +135,27 @@ let components = {
                 back: 'A/normal'
             },
             {
+                front: 'B',
+                back: 'B'
+            },
+            {
                 front: 'G/normal',
-                back: 'G'
+                back: 'G/normal'
             },
             {
                 front: 'G/high',
-                back: 'G'
+                back: 'G/normal'
+            }, {
+                front: 'G/ultrahigh',
+                back: 'G/normal'
+            },
+            {
+                front: 'B',
+                back: 'G/alt'
+            },
+            {
+                front: 'B',
+                back: 'B'
             },
             {
                 front: 'A/small',
