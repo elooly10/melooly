@@ -1,25 +1,26 @@
-import { componentRecord, Melooly } from "../index.js";
+import { componentRecord, Melooly, MeloolyLauncher } from "../index.js";
 import { readFileSync, writeFileSync } from "fs"
 import { Canvas } from "canvas"
 import terminalImage from 'terminal-image';
-
+import { config } from 'dotenv';
+import { env } from 'process';
+config({ quiet: true });
 async function test() {
-let demo = readFileSync('./test/demo.melooly', {encoding: 'utf-8'});
-let melooly = new Melooly(demo);
-await melooly.saveAllComponents();
-//await melooly.prepareComponents();
-let clone = new Melooly(melooly.toSavefile());
-clone.addComponent('nose', 'demo', readFileSync('./test/demo.canvas', {encoding: 'utf-8'}))
-clone.components.nose = {color: '#00f', value: 'demo'}
-melooly.copySavedComponents(clone);
-console.log(`Name: `, clone.name);
-console.log(`Components: `, clone.components);
+    let launcher = new MeloolyLauncher(env.MELOOLY_ID!, env.MELOOLY_KEY!);
+    let meloolies = await launcher.getMelooly(env.USER_ID!);
+    await meloolies[0].saveAllComponents();
+    //await melooly.prepareComponents();
+    let clone = new Melooly(meloolies[0].toSavefile());
+    clone.addComponent('nose', 'demo', readFileSync('./test/demo.canvas', {encoding: 'utf-8'}))
+    clone.components.nose = {color: '#00f', value: 'demo'}
+    meloolies[0].copySavedComponents(clone);
+    console.log(`Name: `, clone.name);
+    console.log(`Components: `, clone.components);
 
-drawSample(clone, 2, { eyes: {
-    color: '#ff0000',
-    value: 'round'
-}})
-
+    drawSample(clone, 2, { eyes: {
+        color: '#ff0000',
+        value: 'round'
+    }})
 };
 test()
 

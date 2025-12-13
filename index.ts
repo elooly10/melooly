@@ -2,16 +2,63 @@ import components from "./components.js";
 import { applyCFF } from "canvasfileformat";
 class MeloolyLauncher {
     private key: string;
-    constructor(key: string) {
+    private websiteID: string;
+    static serverURL: string = 'http://localhost:3000/meloolies/'; // URL of server.
+    /**
+     * Creates a launcher with requested information
+     * @param websiteID the ID of your API Key (not the key itself)
+     * @param key the API Key, as administered on the website. These expire annually and will require a code update.
+     */
+    constructor(websiteID: string, key: string) {
         this.key = key;
+        this.websiteID = websiteID
     }
-    public async getUser(): Promise<string> {
-        console.log("This is a demo function that will open a popup.");
-        return '0'
+    /**
+     * Creates a popup for user authentication  
+     * @param monitorSpeed The speed at which popup close events are monitored, in milliseconds. Defaults to 50ms.
+     * @returns A promise resolving to user ID
+     * @throws If user closes the popup or rejects sharing. No message is provided.
+     */
+    public initiatePopup(monitorSpeed = 50) {
+        let popup = open(`/popup/${this.websiteID}`, "_blank", "width=310,height=400");
+        return new Promise<string>((resolve, reject) => {
+            console.log(popup)
+            if (!popup) {
+                reject();
+                return;
+            }
+            let timer = setInterval(function () {
+                if (popup.closed) {
+                    clearInterval(timer);
+                    console.log('Popup closed')
+                    reject()
+                }
+            }, monitorSpeed);
+            popup.addEventListener('message', (message) => {
+                console.log(message.data)
+                resolve(message.data);
+            })
+        })
     }
+    /** 
+     * Fetches Meloolies from the server
+     * @param userID the user you want to get Meloolies from
+     * @returns An array of Meloolies.
+     * @throws If the key is invalid, the server has an error, the user has not approved sharing, etc.
+     * @see MeloolyLauncher.initiatePopup for how to get the userID
+     */
     public async getMelooly(userID: string): Promise<Melooly[]> {
-        console.log("This is a demo function that will get stuff from the express server.");
-        return []
+            let results = await fetch(`${MeloolyLauncher.serverURL}${userID}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${this.key}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            if(!results.ok) throw {status: results.status, error: results.statusText};
+            let json: string[] | {error: string} = await results.json();
+            if(!Array.isArray(json)) throw {status: results.status, error: json.error};
+            else return json.map((v)=>new Melooly(v));
     }
 }
 export type layer = "blush" | "hair/back" | "hair/front" | "head" | "mole" | "eyes" | "nose" | "mouth" | "glasses" | "moustache";
@@ -67,9 +114,9 @@ class Melooly {
     /** Draws melooly at requested scale onto the provided canvas.
      * Canvas needs to be at least 270px × specified scale for component to fit. */
     public draw(canvas: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D, scale: number = 1, componentAdjustments: Partial<typeof this.components> = {}) {
-        const components = { ...this.components, ...componentAdjustments}
-        for(const componentKey of this.renderingOrder) {
-            this.drawComponent({layer: componentKey, name: components[componentKey].value, color: components[componentKey].color}, canvas, scale)
+        const components = { ...this.components, ...componentAdjustments }
+        for (const componentKey of this.renderingOrder) {
+            this.drawComponent({ layer: componentKey, name: components[componentKey].value, color: components[componentKey].color }, canvas, scale)
         }
     }
     /** Draws melooly component at requested scale onto the provided canvas.
@@ -78,7 +125,7 @@ class Melooly {
     public drawComponent(component: { layer: layer, name: string, color: string }, canvas: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D, scale: number = 1) {
         //Draw it!
         let render = this.renders[component.layer]?.[component.name];
-        if(!render) {
+        if (!render) {
             console.warn(`No component initialized for ${component.layer}/${component.name}`)
             return;
         }
@@ -105,7 +152,7 @@ class Melooly {
             // Add to renders 
             this.addComponent(layer, value, render)
         } catch (error: any) {
-            if(error.status) console.error(`Server Error ${error.status}: ${error.description} (url ${error.url})`)
+            if (error.status) console.error(`Server Error ${error.status}: ${error.description} (url ${error.url})`)
             else console.error(error)
         }
     }
@@ -137,7 +184,7 @@ class Melooly {
         let componentPromises: Promise<void>[] = [];
         for (let entry of entries) {
             if (entry[0] != 'hair') {
-                 componentPromises.push(...(entry[1].values as string[]).map((value) => this.fetchComponent(entry[0] as layer, value)));
+                componentPromises.push(...(entry[1].values as string[]).map((value) => this.fetchComponent(entry[0] as layer, value)));
             }
         }
 
@@ -167,7 +214,7 @@ class Melooly {
     }
 
     public applyHairColor(color: string) {
-        if(this.components.moustache.color == this.components["hair/back"].color) this.components.moustache.color = color;
+        if (this.components.moustache.color == this.components["hair/back"].color) this.components.moustache.color = color;
         this.components["hair/back"].color = color;
         this.components["hair/front"].color = color;
     }

@@ -1,8 +1,28 @@
 import components from "./components.js";
 declare class MeloolyLauncher {
     private key;
-    constructor(key: string);
-    getUser(): Promise<string>;
+    private websiteID;
+    static serverURL: string;
+    /**
+     * Creates a launcher with requested information
+     * @param websiteID the ID of your API Key (not the key itself)
+     * @param key the API Key, as administered on the website. These expire annually and will require a code update.
+     */
+    constructor(websiteID: string, key: string);
+    /**
+     * Creates a popup for user authentication
+     * @param monitorSpeed The speed at which popup close events are monitored, in milliseconds. Defaults to 50ms.
+     * @returns A promise resolving to user ID
+     * @throws If user closes the popup or rejects sharing. No message is provided.
+     */
+    initiatePopup(monitorSpeed?: number): Promise<string>;
+    /**
+     * Fetches Meloolies from the server
+     * @param userID the user you want to get Meloolies from
+     * @returns An array of Meloolies.
+     * @throws If the key is invalid, the server has an error, the user has not approved sharing, etc.
+     * @see MeloolyLauncher.initiatePopup for how to get the userID
+     */
     getMelooly(userID: string): Promise<Melooly[]>;
 }
 export type layer = "blush" | "hair/back" | "hair/front" | "head" | "mole" | "eyes" | "nose" | "mouth" | "glasses" | "moustache";

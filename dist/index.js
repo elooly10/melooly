@@ -1,18 +1,67 @@
 import components from "./components.js";
 import { applyCFF } from "canvasfileformat";
 class MeloolyLauncher {
-    constructor(key) {
+    /**
+     * Creates a launcher with requested information
+     * @param websiteID the ID of your API Key (not the key itself)
+     * @param key the API Key, as administered on the website. These expire annually and will require a code update.
+     */
+    constructor(websiteID, key) {
         this.key = key;
+        this.websiteID = websiteID;
     }
-    async getUser() {
-        console.log("This is a demo function that will open a popup.");
-        return '0';
+    /**
+     * Creates a popup for user authentication
+     * @param monitorSpeed The speed at which popup close events are monitored, in milliseconds. Defaults to 50ms.
+     * @returns A promise resolving to user ID
+     * @throws If user closes the popup or rejects sharing. No message is provided.
+     */
+    initiatePopup(monitorSpeed = 50) {
+        let popup = open(`/popup/${this.websiteID}`, "_blank", "width=310,height=400");
+        return new Promise((resolve, reject) => {
+            console.log(popup);
+            if (!popup) {
+                reject();
+                return;
+            }
+            let timer = setInterval(function () {
+                if (popup.closed) {
+                    clearInterval(timer);
+                    console.log('Popup closed');
+                    reject();
+                }
+            }, monitorSpeed);
+            popup.addEventListener('message', (message) => {
+                console.log(message.data);
+                resolve(message.data);
+            });
+        });
     }
+    /**
+     * Fetches Meloolies from the server
+     * @param userID the user you want to get Meloolies from
+     * @returns An array of Meloolies.
+     * @throws If the key is invalid, the server has an error, the user has not approved sharing, etc.
+     * @see MeloolyLauncher.initiatePopup for how to get the userID
+     */
     async getMelooly(userID) {
-        console.log("This is a demo function that will get stuff from the express server.");
-        return [];
+        let results = await fetch(`${MeloolyLauncher.serverURL}${userID}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${this.key}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        if (!results.ok)
+            throw { status: results.status, error: results.statusText };
+        let json = await results.json();
+        if (!Array.isArray(json))
+            throw { status: results.status, error: json.error };
+        else
+            return json.map((v) => new Melooly(v));
     }
 }
+MeloolyLauncher.serverURL = 'http://localhost:3000/meloolies/'; // URL of server.
 /** Melooly character class. Provides drawing utils for applying to a canvas.
  */
 class Melooly {
