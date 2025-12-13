@@ -17,7 +17,7 @@ class MeloolyLauncher {
      * @throws If user closes the popup or rejects sharing. No message is provided.
      */
     initiatePopup(monitorSpeed = 50) {
-        let popup = open(`/popup/${this.websiteID}`, "_blank", "width=310,height=400");
+        let popup = open(`http://melooly.vercel.app/popup/${this.websiteID}`, "_blank", "width=310,height=400");
         return new Promise((resolve, reject) => {
             console.log(popup);
             if (!popup) {
