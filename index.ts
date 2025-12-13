@@ -19,24 +19,36 @@ class MeloolyLauncher {
      * @returns A promise resolving to user ID, or null, if the user selects not to share
      */
     public initiatePopup(monitorSpeed = 100) {
-        let popup = open(`http://melooly.vercel.app/popup/${this.websiteID}`, "_blank", "width=310,height=400");
+        let popup = open(`https://melooly.vercel.app/popup/${this.websiteID}`, "_blank", "width=310,height=400");
         return new Promise<string | null>((resolve, reject) => {
             if (!popup) {
                 reject();
                 return;
             }
+            // message handler may be removed from multiple places so keep a nullable ref
+            let messageHandler: ((e: MessageEvent) => void) | null = null;
             let timer = setInterval(function () {
                 if (popup.closed) {
                     clearInterval(timer);
                     console.log('Popup closed')
+                    // remove handler if it was attached
+                    if (messageHandler) window.removeEventListener('message', messageHandler as EventListener);
                     resolve(null)
                 }
             }, monitorSpeed);
-            popup.addEventListener('message', (message) => {
-                console.log(message.data)
+
+            // listen on the opener window for postMessage events.
+            // For cross-origin popups, the popup should call `window.opener.postMessage(...)`.
+            messageHandler = (event: MessageEvent) => {
+                // ensure the message comes from the popup we opened
+                if (event.source !== popup) return;
+                console.log(event.data);
                 clearInterval(timer);
-                resolve(message.data);
-            })
+                if (messageHandler) window.removeEventListener('message', messageHandler as EventListener);
+                resolve(event.data as string);
+            };
+
+            window.addEventListener('message', messageHandler as EventListener);
         })
     }
     /** 
@@ -47,17 +59,17 @@ class MeloolyLauncher {
      * @see MeloolyLauncher.initiatePopup for how to get the userID
      */
     public async getMelooly(userID: string): Promise<Melooly[]> {
-            let results = await fetch(`${MeloolyLauncher.serverURL}${userID}`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${this.key}`,
-                    'Content-Type': 'application/json'
-                }
-            });
-            if(!results.ok) throw {status: results.status, error: results.statusText};
-            let json: string[] | {error: string} = await results.json();
-            if(!Array.isArray(json)) throw {status: results.status, error: json.error};
-            else return json.map((v)=>new Melooly(v));
+        let results = await fetch(`${MeloolyLauncher.serverURL}${userID}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${this.key}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        if (!results.ok) throw { status: results.status, error: results.statusText };
+        let json: string[] | { error: string } = await results.json();
+        if (!Array.isArray(json)) throw { status: results.status, error: json.error };
+        else return json.map((v) => new Melooly(v));
     }
 }
 export type layer = "blush" | "hair/back" | "hair/front" | "head" | "mole" | "eyes" | "nose" | "mouth" | "glasses" | "moustache";
