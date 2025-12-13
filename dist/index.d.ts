@@ -12,10 +12,9 @@ declare class MeloolyLauncher {
     /**
      * Creates a popup for user authentication
      * @param monitorSpeed The speed at which popup close events are monitored, in milliseconds. Defaults to 50ms.
-     * @returns A promise resolving to user ID
-     * @throws If user closes the popup or rejects sharing. No message is provided.
+     * @returns A promise resolving to user ID, or null, if the user selects not to share
      */
-    initiatePopup(monitorSpeed?: number): Promise<string>;
+    initiatePopup(monitorSpeed?: number): Promise<string | null>;
     /**
      * Fetches Meloolies from the server
      * @param userID the user you want to get Meloolies from

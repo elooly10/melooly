@@ -13,13 +13,11 @@ class MeloolyLauncher {
     /**
      * Creates a popup for user authentication
      * @param monitorSpeed The speed at which popup close events are monitored, in milliseconds. Defaults to 50ms.
-     * @returns A promise resolving to user ID
-     * @throws If user closes the popup or rejects sharing. No message is provided.
+     * @returns A promise resolving to user ID, or null, if the user selects not to share
      */
-    initiatePopup(monitorSpeed = 50) {
+    initiatePopup(monitorSpeed = 100) {
         let popup = open(`http://melooly.vercel.app/popup/${this.websiteID}`, "_blank", "width=310,height=400");
         return new Promise((resolve, reject) => {
-            console.log(popup);
             if (!popup) {
                 reject();
                 return;
@@ -28,11 +26,12 @@ class MeloolyLauncher {
                 if (popup.closed) {
                     clearInterval(timer);
                     console.log('Popup closed');
-                    reject();
+                    resolve(null);
                 }
             }, monitorSpeed);
             popup.addEventListener('message', (message) => {
                 console.log(message.data);
+                clearInterval(timer);
                 resolve(message.data);
             });
         });
