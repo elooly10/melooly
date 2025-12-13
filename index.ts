@@ -3,7 +3,10 @@ import { applyCFF } from "canvasfileformat";
 class MeloolyLauncher {
     private key: string;
     private websiteID: string;
-    static serverURL: string = 'http://localhost:3000/meloolies/'; // URL of server.
+    /** URL of the server that sends meloolies. */
+    static serverURL: string = 'http://localhost:3000/meloolies/';
+    /** URL of the auth popup */
+    static popupURL: string = 'https://melooly.vercel.app/popup';
     /**
      * Creates a launcher with requested information
      * @param websiteID the ID of your API Key (not the key itself)
@@ -19,7 +22,7 @@ class MeloolyLauncher {
      * @returns A promise resolving to user ID, or null, if the user selects not to share
      */
     public initiatePopup(monitorSpeed = 100) {
-        let popup = open(`https://melooly.vercel.app/popup/${this.websiteID}`, "_blank", "width=310,height=400");
+        let popup = open(MeloolyLauncher.popupURL + this.websiteID, "_blank", "width=310,height=400");
         return new Promise<string | null>((resolve, reject) => {
             if (!popup) {
                 reject();
@@ -31,14 +34,12 @@ class MeloolyLauncher {
                 if (popup.closed) {
                     clearInterval(timer);
                     console.log('Popup closed')
-                    // remove handler if it was attached
+                    // Remove handler
                     if (messageHandler) window.removeEventListener('message', messageHandler as EventListener);
                     resolve(null)
                 }
             }, monitorSpeed);
 
-            // listen on the opener window for postMessage events.
-            // For cross-origin popups, the popup should call `window.opener.postMessage(...)`.
             messageHandler = (event: MessageEvent) => {
                 // ensure the message comes from the popup we opened
                 if (event.source !== popup) return;
@@ -59,7 +60,7 @@ class MeloolyLauncher {
      * @see MeloolyLauncher.initiatePopup for how to get the userID
      */
     public async getMelooly(userID: string): Promise<Melooly[]> {
-        let results = await fetch(`${MeloolyLauncher.serverURL}${userID}`, {
+        let results = await fetch(MeloolyLauncher.serverURL + userID, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${this.key}`,
