@@ -103,9 +103,9 @@ class MeloolyLauncher {
     ;
 }
 /** URL of the server that sends meloolies. */
-MeloolyLauncher.serverURL = 'http://localhost:5173/API/';
+MeloolyLauncher.serverURL = 'https://melooly.vercel.app/API/';
 /** URL of the Demo Melooly database */
-MeloolyLauncher.demoServerURL = 'http://localhost:5173/demoCharacters/';
+MeloolyLauncher.demoServerURL = 'https://melooly.vercel.app/demoCharacters/';
 /** Number of Demo Meloolies in the database */
 MeloolyLauncher.demoCount = 10;
 /** URL of the auth popup */
