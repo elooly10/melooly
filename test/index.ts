@@ -16,9 +16,7 @@ async function userTest(launcher: MeloolyLauncher) {
     let clone = new Melooly(meloolies[0].toSavefile());
     clone.addComponent('nose', 'demo', readFileSync('./test/demo.canvas', { encoding: 'utf-8' }))
     clone.components.nose = { color: '#00f', value: 'demo' }
-    meloolies[0].copySavedComponents(clone);
-    console.log(`Name: `, clone.name);
-    console.log(`Components: `, clone.components);
+    meloolies[0].copySavedComponents(clone);;
 
     await drawSample(clone, 2, {
         eyes: {
@@ -48,6 +46,8 @@ async function drawSample(melooly: Melooly, scale: number, items: Partial<compon
     context.fillRect(0, 0, 270 * scale, 270 * scale);
     melooly.draw(context, scale, items);
 
+    console.log(`Name: `, melooly.name);
+    console.log(`Components: `, melooly.components);
     writeFileSync(`./test/${filename}.png`, canvas.toBuffer())
     console.log(await terminalImage.file(`./test/${filename}.png`, { width: '50%', height: '50%' }))
 }

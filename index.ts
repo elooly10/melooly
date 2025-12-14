@@ -16,9 +16,9 @@ class MeloolyLauncher {
     private key: string;
     private websiteID: string;
     /** URL of the server that sends meloolies. */
-    static serverURL: string = 'http://localhost:3000/meloolies/';
+    static serverURL: string = 'https://melooly.vercel.app/API/';
     /** URL of the Demo Melooly database */
-    static demoServerURL: string = 'http://localhost:3000/characters/';
+    static demoServerURL: string = 'https://melooly.vercel.app/demoCharacters/';
     /** Number of Demo Meloolies in the database */
     static readonly demoCount = 10;
     /** URL of the auth popup */
@@ -45,27 +45,25 @@ class MeloolyLauncher {
                 return;
             }
             // message handler may be removed from multiple places so keep a nullable ref
-            let messageHandler: ((e: MessageEvent) => void) | null = null;
+            let messageHandler: EventListener | null = null;
             let timer = setInterval(function () {
                 if (popup.closed) {
                     clearInterval(timer);
-                    console.log('Popup closed')
                     // Remove handler
-                    if (messageHandler) window.removeEventListener('message', messageHandler as EventListener);
+                    if (messageHandler) window.removeEventListener('message', messageHandler);
                     resolve(null)
                 }
             }, monitorSpeed);
 
-            messageHandler = (event: MessageEvent) => {
-                // ensure the message comes from the popup we opened
+            messageHandler = ((event: MessageEvent) => {
+                // Ensure this comes from popup
                 if (event.source !== popup) return;
-                console.log(event.data);
                 clearInterval(timer);
-                if (messageHandler) window.removeEventListener('message', messageHandler as EventListener);
+                if (messageHandler) window.removeEventListener('message', messageHandler);
                 resolve(event.data as string);
-            };
+            }) as EventListener;
 
-            window.addEventListener('message', messageHandler as EventListener);
+            window.addEventListener('message', messageHandler);
         })
     }
     /** 
@@ -84,8 +82,8 @@ class MeloolyLauncher {
             }
         });
         if (!results.ok) throw { status: results.status, error: results.statusText };
-        let json: string[] | { error: string } = await results.json();
-        if (!Array.isArray(json)) throw { status: results.status, error: json.error };
+        let json: string[] = await results.json();
+        if (!Array.isArray(json)) throw { status: -1, error: `JSON Not OK ${json}` };
         else return json.map((v) => new Melooly(v));
     };
     /**

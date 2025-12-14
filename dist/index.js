@@ -40,23 +40,21 @@ class MeloolyLauncher {
             let timer = setInterval(function () {
                 if (popup.closed) {
                     clearInterval(timer);
-                    console.log('Popup closed');
                     // Remove handler
                     if (messageHandler)
                         window.removeEventListener('message', messageHandler);
                     resolve(null);
                 }
             }, monitorSpeed);
-            messageHandler = (event) => {
-                // ensure the message comes from the popup we opened
+            messageHandler = ((event) => {
+                // Ensure this comes from popup
                 if (event.source !== popup)
                     return;
-                console.log(event.data);
                 clearInterval(timer);
                 if (messageHandler)
                     window.removeEventListener('message', messageHandler);
                 resolve(event.data);
-            };
+            });
             window.addEventListener('message', messageHandler);
         });
     }
@@ -79,7 +77,7 @@ class MeloolyLauncher {
             throw { status: results.status, error: results.statusText };
         let json = await results.json();
         if (!Array.isArray(json))
-            throw { status: results.status, error: json.error };
+            throw { status: -1, error: `JSON Not OK ${json}` };
         else
             return json.map((v) => new Melooly(v));
     }
@@ -105,9 +103,9 @@ class MeloolyLauncher {
     ;
 }
 /** URL of the server that sends meloolies. */
-MeloolyLauncher.serverURL = 'http://localhost:3000/meloolies/';
+MeloolyLauncher.serverURL = 'http://localhost:5173/API/';
 /** URL of the Demo Melooly database */
-MeloolyLauncher.demoServerURL = 'http://localhost:3000/characters/';
+MeloolyLauncher.demoServerURL = 'http://localhost:5173/demoCharacters/';
 /** Number of Demo Meloolies in the database */
 MeloolyLauncher.demoCount = 10;
 /** URL of the auth popup */
