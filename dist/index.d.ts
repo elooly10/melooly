@@ -2,7 +2,14 @@ import components from "./components.js";
 declare class MeloolyLauncher {
     private key;
     private websiteID;
+    /** URL of the server that sends meloolies. */
     static serverURL: string;
+    /** URL of the Demo Melooly database */
+    static demoServerURL: string;
+    /** Number of Demo Meloolies in the database */
+    static readonly demoCount = 10;
+    /** URL of the auth popup */
+    static popupURL: string;
     /**
      * Creates a launcher with requested information
      * @param websiteID the ID of your API Key (not the key itself)
@@ -23,6 +30,13 @@ declare class MeloolyLauncher {
      * @see MeloolyLauncher.initiatePopup for how to get the userID
      */
     getMelooly(userID: string): Promise<Melooly[]>;
+    /**
+     * Gets a demo character
+     * @param demoID The number ID of what demo character to load
+     * @returns A melooly demo
+     */
+    getDemo(demoID?: number): Promise<Melooly>;
+    getRandomDemos(count: number): Promise<Melooly[]>;
 }
 export type layer = "blush" | "hair/back" | "hair/front" | "head" | "mole" | "eyes" | "nose" | "mouth" | "glasses" | "moustache";
 export type componentRecord = Record<layer, {

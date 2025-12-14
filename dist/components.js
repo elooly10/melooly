@@ -134,14 +134,13 @@ let components = {
                 front: 'G/high',
                 back: 'A/normal'
             },
-            // Put new hairstyles here (should be similar to A/G pairs)
             {
-                front: 'B',
-                back: 'B'
+                front: 'G/normal',
+                back: 'I'
             },
             {
-                front: 'B',
-                back: 'B'
+                front: 'G/high',
+                back: 'I'
             },
             {
                 front: 'G/normal',

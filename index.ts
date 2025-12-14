@@ -1,12 +1,28 @@
 import components from "./components.js";
 import { applyCFF } from "canvasfileformat";
+function getRandomNumbers(count: number, max: number) {
+    if(count < max) return [];
+    let numbers: number[] = [];
+    for(let i = 0; i < count; i++) {
+        let number: number;
+        do {
+            number = Math.floor(Math.random() * max)
+        } while(numbers.includes(number))
+        numbers.push(number);
+    }
+    return numbers;
+}
 class MeloolyLauncher {
     private key: string;
     private websiteID: string;
     /** URL of the server that sends meloolies. */
     static serverURL: string = 'http://localhost:3000/meloolies/';
+    /** URL of the Demo Melooly database */
+    static demoServerURL: string = 'http://localhost:3000/characters/';
+    /** Number of Demo Meloolies in the database */
+    static readonly demoCount = 10;
     /** URL of the auth popup */
-    static popupURL: string = 'https://melooly.vercel.app/popup';
+    static popupURL: string = 'https://melooly.vercel.app/popup/';
     /**
      * Creates a launcher with requested information
      * @param websiteID the ID of your API Key (not the key itself)
@@ -71,7 +87,24 @@ class MeloolyLauncher {
         let json: string[] | { error: string } = await results.json();
         if (!Array.isArray(json)) throw { status: results.status, error: json.error };
         else return json.map((v) => new Melooly(v));
-    }
+    };
+    /**
+     * Gets a demo character
+     * @param demoID The number ID of what demo character to load
+     * @returns A melooly demo
+     */
+    public async getDemo(demoID: number = Math.floor(Math.random() * MeloolyLauncher.demoCount)): Promise<Melooly> {
+        let results = await fetch(MeloolyLauncher.demoServerURL + demoID.toString(16).padStart(2, '0') + '.melooly');
+        if (!results.ok) throw { status: results.status, error: results.statusText };
+        let characterContents: string = await results.text();
+        return new Melooly(characterContents);
+    };
+
+    public async getRandomDemos(count: number): Promise<Melooly[]> {
+        let numbers: number[] = count > MeloolyLauncher.demoCount?new Array(MeloolyLauncher.demoCount).map((v, i)=>i) :
+        getRandomNumbers(count, MeloolyLauncher.demoCount);
+        return await Promise.all(numbers.map(n=>this.getDemo(n)))
+    };
 }
 export type layer = "blush" | "hair/back" | "hair/front" | "head" | "mole" | "eyes" | "nose" | "mouth" | "glasses" | "moustache";
 export type componentRecord = Record<layer, {

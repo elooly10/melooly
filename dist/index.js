@@ -1,5 +1,18 @@
 import components from "./components.js";
 import { applyCFF } from "canvasfileformat";
+function getRandomNumbers(count, max) {
+    if (count < max)
+        return [];
+    let numbers = [];
+    for (let i = 0; i < count; i++) {
+        let number;
+        do {
+            number = Math.floor(Math.random() * max);
+        } while (numbers.includes(number));
+        numbers.push(number);
+    }
+    return numbers;
+}
 class MeloolyLauncher {
     /**
      * Creates a launcher with requested information
@@ -16,24 +29,35 @@ class MeloolyLauncher {
      * @returns A promise resolving to user ID, or null, if the user selects not to share
      */
     initiatePopup(monitorSpeed = 100) {
-        let popup = open(`http://melooly.vercel.app/popup/${this.websiteID}`, "_blank", "width=310,height=400");
+        let popup = open(MeloolyLauncher.popupURL + this.websiteID, "_blank", "width=310,height=400");
         return new Promise((resolve, reject) => {
             if (!popup) {
                 reject();
                 return;
             }
+            // message handler may be removed from multiple places so keep a nullable ref
+            let messageHandler = null;
             let timer = setInterval(function () {
                 if (popup.closed) {
                     clearInterval(timer);
                     console.log('Popup closed');
+                    // Remove handler
+                    if (messageHandler)
+                        window.removeEventListener('message', messageHandler);
                     resolve(null);
                 }
             }, monitorSpeed);
-            popup.addEventListener('message', (message) => {
-                console.log(message.data);
+            messageHandler = (event) => {
+                // ensure the message comes from the popup we opened
+                if (event.source !== popup)
+                    return;
+                console.log(event.data);
                 clearInterval(timer);
-                resolve(message.data);
-            });
+                if (messageHandler)
+                    window.removeEventListener('message', messageHandler);
+                resolve(event.data);
+            };
+            window.addEventListener('message', messageHandler);
         });
     }
     /**
@@ -44,7 +68,7 @@ class MeloolyLauncher {
      * @see MeloolyLauncher.initiatePopup for how to get the userID
      */
     async getMelooly(userID) {
-        let results = await fetch(`${MeloolyLauncher.serverURL}${userID}`, {
+        let results = await fetch(MeloolyLauncher.serverURL + userID, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${this.key}`,
@@ -59,8 +83,35 @@ class MeloolyLauncher {
         else
             return json.map((v) => new Melooly(v));
     }
+    ;
+    /**
+     * Gets a demo character
+     * @param demoID The number ID of what demo character to load
+     * @returns A melooly demo
+     */
+    async getDemo(demoID = Math.floor(Math.random() * MeloolyLauncher.demoCount)) {
+        let results = await fetch(MeloolyLauncher.demoServerURL + demoID.toString(16).padStart(2, '0') + '.melooly');
+        if (!results.ok)
+            throw { status: results.status, error: results.statusText };
+        let characterContents = await results.text();
+        return new Melooly(characterContents);
+    }
+    ;
+    async getRandomDemos(count) {
+        let numbers = count > MeloolyLauncher.demoCount ? new Array(MeloolyLauncher.demoCount).map((v, i) => i) :
+            getRandomNumbers(count, MeloolyLauncher.demoCount);
+        return await Promise.all(numbers.map(n => this.getDemo(n)));
+    }
+    ;
 }
-MeloolyLauncher.serverURL = 'http://localhost:3000/meloolies/'; // URL of server.
+/** URL of the server that sends meloolies. */
+MeloolyLauncher.serverURL = 'http://localhost:3000/meloolies/';
+/** URL of the Demo Melooly database */
+MeloolyLauncher.demoServerURL = 'http://localhost:3000/characters/';
+/** Number of Demo Meloolies in the database */
+MeloolyLauncher.demoCount = 10;
+/** URL of the auth popup */
+MeloolyLauncher.popupURL = 'https://melooly.vercel.app/popup/';
 /** Melooly character class. Provides drawing utils for applying to a canvas.
  */
 class Melooly {
