@@ -18,7 +18,7 @@ declare class MeloolyLauncher {
     constructor(websiteID: string, key: string);
     /**
      * Creates a popup for user authentication
-     * @param monitorSpeed The speed at which popup close events are monitored, in milliseconds. Defaults to 50ms.
+     * @param monitorSpeed The speed at which popup close events are monitored, in milliseconds. Defaults to 100ms.
      * @returns A promise resolving to user ID, or null, if the user selects not to share
      */
     initiatePopup(monitorSpeed?: number): Promise<string | null>;

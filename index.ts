@@ -34,7 +34,7 @@ class MeloolyLauncher {
     }
     /**
      * Creates a popup for user authentication  
-     * @param monitorSpeed The speed at which popup close events are monitored, in milliseconds. Defaults to 50ms.
+     * @param monitorSpeed The speed at which popup close events are monitored, in milliseconds. Defaults to 100ms.
      * @returns A promise resolving to user ID, or null, if the user selects not to share
      */
     public initiatePopup(monitorSpeed = 100) {
@@ -81,9 +81,9 @@ class MeloolyLauncher {
                 'Content-Type': 'application/json'
             }
         });
-        if (!results.ok) throw { status: results.status, error: results.statusText };
-        let json: string[] = await results.json();
-        if (!Array.isArray(json)) throw { status: -1, error: `JSON Not OK ${json}` };
+        // if (!results.ok) throw { status: results.status, error: results.statusText };
+        let json: string[] | {message: string} = await results.json();
+        if (!Array.isArray(json)) throw { status: results.status, error: json.message };
         else return json.map((v) => new Melooly(v));
     };
     /**
@@ -149,8 +149,8 @@ class Melooly {
         'eyes',
         'nose',
         'mouth',
-        'glasses',
         'moustache',
+        'glasses',
         'hair/front'
     ]
     // Static cff renders will be saved in the package

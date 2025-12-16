@@ -25,7 +25,7 @@ class MeloolyLauncher {
     }
     /**
      * Creates a popup for user authentication
-     * @param monitorSpeed The speed at which popup close events are monitored, in milliseconds. Defaults to 50ms.
+     * @param monitorSpeed The speed at which popup close events are monitored, in milliseconds. Defaults to 100ms.
      * @returns A promise resolving to user ID, or null, if the user selects not to share
      */
     initiatePopup(monitorSpeed = 100) {
@@ -73,11 +73,10 @@ class MeloolyLauncher {
                 'Content-Type': 'application/json'
             }
         });
-        if (!results.ok)
-            throw { status: results.status, error: results.statusText };
+        // if (!results.ok) throw { status: results.status, error: results.statusText };
         let json = await results.json();
         if (!Array.isArray(json))
-            throw { status: -1, error: `JSON Not OK ${json}` };
+            throw { status: results.status, error: json.message };
         else
             return json.map((v) => new Melooly(v));
     }
@@ -88,6 +87,7 @@ class MeloolyLauncher {
      * @returns A melooly demo
      */
     async getDemo(demoID = Math.floor(Math.random() * MeloolyLauncher.demoCount)) {
+        console.log("Getting demo", demoID);
         let results = await fetch(MeloolyLauncher.demoServerURL + demoID.toString(16).padStart(2, '0') + '.melooly');
         if (!results.ok)
             throw { status: results.status, error: results.statusText };
@@ -145,8 +145,8 @@ class Melooly {
             'eyes',
             'nose',
             'mouth',
-            'glasses',
             'moustache',
+            'glasses',
             'hair/front'
         ];
         // Handle renders
