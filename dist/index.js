@@ -87,7 +87,6 @@ class MeloolyLauncher {
      * @returns A melooly demo
      */
     async getDemo(demoID = Math.floor(Math.random() * MeloolyLauncher.demoCount)) {
-        console.log("Getting demo", demoID);
         let results = await fetch(MeloolyLauncher.demoServerURL + demoID.toString(16).padStart(2, '0') + '.melooly');
         if (!results.ok)
             throw { status: results.status, error: results.statusText };
