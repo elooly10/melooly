@@ -20,6 +20,6 @@
 		"typescript": "^5.9.3"
 	},
 	"dependencies": {
-		"canvasff": "github:elooly10/canvasFileFormat"
+		"canvasff": "^0.1.0"
 	}
 }

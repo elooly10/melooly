@@ -173,7 +173,7 @@ class Melooly {
             return;
         }
         let appliedRender = 'begin path\n' + render.replaceAll("\\c", component.color);
-        applyCFF(canvas, appliedRender, false, scale);
+        applyCFF(canvas, appliedRender, scale);
     }
     /** Add drawing instructions for a custom component so it can be used as a feature (e.g. a new eye style) */
     async addComponent(layer, name, cff) {

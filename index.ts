@@ -173,7 +173,7 @@ class Melooly {
             return;
         }
         let appliedRender = 'begin path\n' + render.replaceAll("\\c", component.color);
-        applyCFF(canvas, appliedRender, false, scale)
+        applyCFF(canvas, appliedRender, scale)
     }
 
 
