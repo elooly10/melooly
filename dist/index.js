@@ -1,7 +1,7 @@
 import components from "./components.js";
-import { applyCFF } from "canvasfileformat";
+import { applyCFF } from "canvasff";
 function getRandomNumbers(count, max) {
-    if (count < max)
+    if (count > max)
         return [];
     let numbers = [];
     for (let i = 0; i < count; i++) {
@@ -95,7 +95,7 @@ class MeloolyLauncher {
     }
     ;
     async getRandomDemos(count) {
-        let numbers = count > MeloolyLauncher.demoCount ? new Array(MeloolyLauncher.demoCount).map((v, i) => i) :
+        let numbers = count > MeloolyLauncher.demoCount ? new Array(MeloolyLauncher.demoCount).fill(0).map((v, i) => i) :
             getRandomNumbers(count, MeloolyLauncher.demoCount);
         return await Promise.all(numbers.map(n => this.getDemo(n)));
     }

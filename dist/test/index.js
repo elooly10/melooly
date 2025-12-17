@@ -30,18 +30,17 @@ async function userTest(launcher) {
     }, 'test1');
 }
 async function demoTest(launcher) {
-    let demo = await launcher.getDemo().catch(v => console.error(v));
+    let demo = await launcher.getRandomDemos(1).catch(v => console.error(v));
     if (!demo)
         return;
-    await demo.saveSelectedComponents();
-    await drawSample(demo, 3, {}, 'test2');
+    await demo[0].saveSelectedComponents();
+    await drawSample(demo[0], 1.5, {}, 'test2');
 }
 async function test() {
     // Apply polyfills
     globalThis.Path2D = Path2D;
     applyPath2DToCanvasRenderingContext(crc2D);
     console.log("Testing");
-    Melooly.componentURL = 'http://localhost:5173/components/\\l/\\v.canvas';
     let launcher = new MeloolyLauncher(env.MELOOLY_ID, env.MELOOLY_KEY);
     await userTest(launcher);
     await demoTest(launcher);

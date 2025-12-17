@@ -1,4 +1,4 @@
-import { Melooly, MeloolyLauncher } from "../index.js";
+import { MeloolyLauncher } from "../index.js";
 import { writeFileSync } from "fs";
 import { Canvas, CanvasRenderingContext2D as crc2D } from "canvas";
 import { Path2D, applyPath2DToCanvasRenderingContext } from "path2d";
@@ -17,7 +17,6 @@ async function test() {
     // Apply polyfills
     globalThis.Path2D = Path2D;
     applyPath2DToCanvasRenderingContext(crc2D);
-    Melooly.componentURL = 'http://localhost:5173/components/\\l/\\v.canvas';
     console.log("Testing");
     let launcher = new MeloolyLauncher('', '');
     await demoTest(launcher);
@@ -36,6 +35,6 @@ async function drawSample(melooly, scale, items, filename) {
         console.log(`\t${entry[0].padEnd(12)}: ${styleText('yellow', entry[1].value.padEnd(14))} ${entry[1].color.padEnd(8)} ${item ? styleText('green', `Replaced with ${item.color.padEnd(8)} ${item.value}`) : ''}`);
     });
     console.log('');
-    writeFileSync(`./test/${filename}.png`, canvas.toBuffer());
-    console.log(await terminalImage.file(`./test/${filename}.png`, { width: '50%', height: '50%' }));
+    writeFileSync(`./test/demoImages/${filename}.png`, canvas.toBuffer());
+    console.log(await terminalImage.file(`./test/demoImages/${filename}.png`, { width: '50%', height: '50%' }));
 }
