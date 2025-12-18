@@ -98,7 +98,11 @@ class MeloolyLauncher {
         return new Melooly(characterContents);
     };
 
-    public async getRandomDemos(count: number): Promise<Melooly[]> {
+    /** Basic function to get multiple demo characters
+     * If count is set to a number less than the number of demo characters, count number of demos will be grabbed randomly (each demo is unique).
+     * If it is unset or set to Infinity, each demo will be got in numerical order
+     */
+    public async getDemos(count: number = Infinity): Promise<Melooly[]> {
         let numbers: number[] = count > MeloolyLauncher.demoCount?new Array(MeloolyLauncher.demoCount).fill(0).map((v, i)=>i) :
         getRandomNumbers(count, MeloolyLauncher.demoCount);
         return await Promise.all(numbers.map(n=>this.getDemo(n)))
@@ -115,14 +119,14 @@ class Melooly {
     public components: Record<layer, { color: string, value: string }> = {} as any;
     public name: string = "";
     public gender: 'M' | 'F' | 'O' | 'P' = 'P';
-    public favoriteColor: string = '#000000';
+    public favoriteColor: number = 0;
     /** Import savefile to melooly */
     private importFile(file: string) {
         file.split("\n").forEach((element, i) => {
             let contents = element.split("\t");
             if (i == 0) {
                 this.name = contents[0];
-                this.favoriteColor = contents[1];
+                this.favoriteColor = parseInt(contents[1]);
                 this.gender = contents[2] as typeof this.gender ?? 'P';
             } else {
                 // contents: [name, color, component]
@@ -263,8 +267,34 @@ class Melooly {
     }
 }
 
+/** An object converting the favorite color to a hex value  */
+const primaryColors: Record<number, string> = {
+    0:  '#382E2E', // Black
+    1:  '#FF0040', // Red
+    2:  '#FF8000', // Orange
+    3:  '#FFFF00', // Yellow
+    4:  '#00A82A', // Green
+    5:  '#2050DF', // Blue
+    6:  '#6040BF', // Purple
+    7:  '#FF80DF', // Pink
+    8:  '#BFFF00', // Lime
+    9:  '#107070', // Teal
+    10: '#00BFFF', // Sky
+    11: '#BF409F', // Fuchsia
+    12: '#804000', // Brown
+    13: '#808000', // Olive
+    14: '#879292', // Gray
+    15: '#F2F3F3'  // White
+ // 16: "#800020", // Maroon
+ // 17: "#206030", // Forest
+ // 18: "#200080", // Navy
+ // 19: "#EFD790", // Cream
+ // 20: '#D2691E', // Carmel
+};
+
 export {
     components,
+    primaryColors,
     MeloolyLauncher,
     Melooly
 }

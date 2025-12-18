@@ -118,7 +118,7 @@ class Melooly {
             let contents = element.split("\t");
             if (i == 0) {
                 this.name = contents[0];
-                this.favoriteColor = contents[1];
+                this.favoriteColor = parseInt(contents[1]);
                 this.gender = contents[2] ?? 'P';
             }
             else {
@@ -135,7 +135,7 @@ class Melooly {
         this.components = {};
         this.name = "";
         this.gender = 'P';
-        this.favoriteColor = '#000000';
+        this.favoriteColor = 0;
         this.renderingOrder = [
             'hair/back',
             'head',
@@ -261,4 +261,28 @@ class Melooly {
  * Layer is represented with \l, and value \v.
  */
 Melooly.componentURL = 'https://melooly.vercel.app/components/\\l/\\v.canvas';
-export { components, MeloolyLauncher, Melooly };
+/** An object converting the favorite color to a hex value  */
+const primaryColors = {
+    0: '#382E2E', // Black
+    1: '#FF0040', // Red
+    2: '#FF8000', // Orange
+    3: '#FFFF00', // Yellow
+    4: '#00A82A', // Green
+    5: '#2050DF', // Blue
+    6: '#6040BF', // Purple
+    7: '#FF80DF', // Pink
+    8: '#BFFF00', // Lime
+    9: '#107070', // Teal
+    10: '#00BFFF', // Sky
+    11: '#BF409F', // Fuchsia
+    12: '#804000', // Brown
+    13: '#808000', // Olive
+    14: '#879292', // Gray
+    15: '#F2F3F3' // White
+    // 16: "#800020", // Maroon
+    // 17: "#206030", // Forest
+    // 18: "#200080", // Navy
+    // 19: "#EFD790", // Cream
+    // 20: '#D2691E', // Carmel
+};
+export { components, primaryColors, MeloolyLauncher, Melooly };

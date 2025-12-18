@@ -52,7 +52,7 @@ declare class Melooly {
     }>;
     name: string;
     gender: 'M' | 'F' | 'O' | 'P';
-    favoriteColor: string;
+    favoriteColor: number;
     /** Import savefile to melooly */
     private importFile;
     /** URL all Meloolies load components from. Defaults to melooly website.
@@ -93,4 +93,6 @@ declare class Melooly {
     clone(): Melooly;
     applyHairColor(color: string): void;
 }
-export { components, MeloolyLauncher, Melooly };
+/** An object converting the favorite color to a hex value  */
+declare const primaryColors: Record<number, string>;
+export { components, primaryColors, MeloolyLauncher, Melooly };

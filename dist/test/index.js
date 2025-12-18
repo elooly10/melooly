@@ -1,4 +1,4 @@
-import { Melooly, MeloolyLauncher } from "../index.js";
+import { Melooly, MeloolyLauncher, primaryColors } from "../index.js";
 import { readFileSync, writeFileSync } from "fs";
 import { Canvas, CanvasRenderingContext2D as crc2D } from "canvas";
 import terminalImage from 'terminal-image';
@@ -50,7 +50,7 @@ test();
 async function drawSample(melooly, scale, items, filename) {
     let canvas = new Canvas(270 * scale, 270 * scale);
     let context = canvas.getContext('2d'); // Convert to HTML canvas
-    context.fillStyle = melooly.favoriteColor;
+    context.fillStyle = primaryColors[melooly.favoriteColor];
     context.fillRect(0, 0, 270 * scale, 270 * scale);
     melooly.draw(context, scale, items);
     console.log(`\n${styleText('cyanBright', melooly.name)} Components: `);

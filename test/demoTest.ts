@@ -1,12 +1,12 @@
-import { componentRecord, layer, Melooly, MeloolyLauncher } from "../index.js";
+import { componentRecord, layer, Melooly, MeloolyLauncher, primaryColors } from "../index.js";
 import { writeFileSync } from "fs"
 import { Canvas, CanvasRenderingContext2D as crc2D } from "canvas"
 import { Path2D, applyPath2DToCanvasRenderingContext } from "path2d";
 import terminalImage from 'terminal-image';
 import { styleText } from "util";
 async function demoTest(launcher: MeloolyLauncher) {
-	let demos = await Promise.all(new Array(MeloolyLauncher.demoCount - 1).fill(undefined).map((v, i)=>launcher.getDemo(i)
-	)).catch(v => console.error(v));
+	MeloolyLauncher.demoServerURL = 'http://localhost:5173/demoCharacters/'
+	let demos = await launcher.getDemos();
 	if (!demos) return;
 	await Promise.all(demos.map(d=>d.saveSelectedComponents()));
 	for(let i = 0; i < demos.length; i++) {
@@ -26,7 +26,7 @@ test()
 async function drawSample(melooly: Melooly, scale: number, items: Partial<componentRecord>, filename: string) {
 	let canvas = new Canvas(270 * scale, 270 * scale);
 	let context = canvas.getContext('2d') as any as CanvasRenderingContext2D // Convert to HTML canvas
-	context.fillStyle = melooly.favoriteColor;
+	context.fillStyle = primaryColors[melooly.favoriteColor];
 	context.fillRect(0, 0, 270 * scale, 270 * scale);
 	melooly.draw(context, scale, items);
 
