@@ -1,13 +1,13 @@
 import components from "./components.js";
 import { applyCFF } from "canvasff";
 function getRandomNumbers(count: number, max: number) {
-    if(count > max) return [];
+    if (count > max) return [];
     let numbers: number[] = [];
-    for(let i = 0; i < count; i++) {
+    for (let i = 0; i < count; i++) {
         let number: number;
         do {
             number = Math.floor(Math.random() * max)
-        } while(numbers.includes(number))
+        } while (numbers.includes(number))
         numbers.push(number);
     }
     return numbers;
@@ -82,7 +82,7 @@ class MeloolyLauncher {
             }
         });
         // if (!results.ok) throw { status: results.status, error: results.statusText };
-        let json: string[] | {message: string} = await results.json();
+        let json: string[] | { message: string } = await results.json();
         if (!Array.isArray(json)) throw { status: results.status, error: json.message };
         else return json.map((v) => new Melooly(v));
     };
@@ -103,9 +103,9 @@ class MeloolyLauncher {
      * If it is unset or set to Infinity, each demo will be got in numerical order
      */
     public async getDemos(count: number = Infinity): Promise<Melooly[]> {
-        let numbers: number[] = count > MeloolyLauncher.demoCount?new Array(MeloolyLauncher.demoCount).fill(0).map((v, i)=>i) :
-        getRandomNumbers(count, MeloolyLauncher.demoCount);
-        return await Promise.all(numbers.map(n=>this.getDemo(n)))
+        let numbers: number[] = count > MeloolyLauncher.demoCount ? new Array(MeloolyLauncher.demoCount).fill(0).map((v, i) => i) :
+            getRandomNumbers(count, MeloolyLauncher.demoCount);
+        return await Promise.all(numbers.map(n => this.getDemo(n)))
     };
 }
 export type layer = "blush" | "hair/back" | "hair/front" | "head" | "mole" | "eyes" | "nose" | "mouth" | "glasses" | "moustache";
@@ -267,29 +267,29 @@ class Melooly {
     }
 }
 
-/** An object converting the favorite color to a hex value  */
+/** An object converting the favorite color property to a hex value  */
 const primaryColors: Record<number, string> = {
-    0:  '#382E2E', // Black
-    1:  '#FF0040', // Red
-    2:  '#FF8000', // Orange
-    3:  '#FFFF00', // Yellow
-    4:  '#00A82A', // Green
-    5:  '#2050DF', // Blue
-    6:  '#6040BF', // Purple
-    7:  '#FF80DF', // Pink
-    8:  '#BFFF00', // Lime
-    9:  '#107070', // Teal
-    10: '#00BFFF', // Sky
-    11: '#BF409F', // Fuchsia
-    12: '#804000', // Brown
-    13: '#808000', // Olive
-    14: '#879292', // Gray
-    15: '#F2F3F3'  // White
- // 16: "#800020", // Maroon
- // 17: "#206030", // Forest
- // 18: "#200080", // Navy
- // 19: "#EFD790", // Cream
- // 20: '#D2691E', // Carmel
+    0: '#382E2E', // Black
+    1: '#FF0040', // Red
+    2: '#FF8000', // Orange
+    3: '#FFFF00', // Yellow
+    4: '#00A82A', // Green
+    5: '#00BFFF', // Sky
+    6: '#2050DF', // Blue
+    7: '#F2F3F3', // White
+    8: '#879292', // Gray
+    9: '#FF80DF', // Pink
+    10: '#804000', // Brown
+    11: '#808000', // Olive
+    12: '#BFFF00', // Lime
+    13: '#107070', // Teal
+    14: '#6040BF', // Purple
+    15: '#BF409F', // Fuchsia
+    // 17: "#800020", // Maroon
+    // 18: '#D2691E', // Carmel
+    // 19: "#EFD790", // Cream
+    // 20: "#206030", // Forest
+    // 22: "#200080", // Navy
 };
 
 export {

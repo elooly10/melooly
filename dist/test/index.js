@@ -30,7 +30,7 @@ async function userTest(launcher) {
     }, 'test1');
 }
 async function demoTest(launcher) {
-    let demo = await launcher.getRandomDemos(1).catch(v => console.error(v));
+    let demo = await launcher.getDemos(1).catch(v => console.error(v));
     if (!demo)
         return;
     await demo[0].saveSelectedComponents();

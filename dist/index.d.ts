@@ -36,7 +36,11 @@ declare class MeloolyLauncher {
      * @returns A melooly demo
      */
     getDemo(demoID?: number): Promise<Melooly>;
-    getRandomDemos(count: number): Promise<Melooly[]>;
+    /** Basic function to get multiple demo characters
+     * If count is set to a number less than the number of demo characters, count number of demos will be grabbed randomly (each demo is unique).
+     * If it is unset or set to Infinity, each demo will be got in numerical order
+     */
+    getDemos(count?: number): Promise<Melooly[]>;
 }
 export type layer = "blush" | "hair/back" | "hair/front" | "head" | "mole" | "eyes" | "nose" | "mouth" | "glasses" | "moustache";
 export type componentRecord = Record<layer, {
@@ -93,6 +97,6 @@ declare class Melooly {
     clone(): Melooly;
     applyHairColor(color: string): void;
 }
-/** An object converting the favorite color to a hex value  */
+/** An object converting the favorite color property to a hex value  */
 declare const primaryColors: Record<number, string>;
 export { components, primaryColors, MeloolyLauncher, Melooly };

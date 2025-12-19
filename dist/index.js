@@ -94,7 +94,11 @@ class MeloolyLauncher {
         return new Melooly(characterContents);
     }
     ;
-    async getRandomDemos(count) {
+    /** Basic function to get multiple demo characters
+     * If count is set to a number less than the number of demo characters, count number of demos will be grabbed randomly (each demo is unique).
+     * If it is unset or set to Infinity, each demo will be got in numerical order
+     */
+    async getDemos(count = Infinity) {
         let numbers = count > MeloolyLauncher.demoCount ? new Array(MeloolyLauncher.demoCount).fill(0).map((v, i) => i) :
             getRandomNumbers(count, MeloolyLauncher.demoCount);
         return await Promise.all(numbers.map(n => this.getDemo(n)));
@@ -261,28 +265,28 @@ class Melooly {
  * Layer is represented with \l, and value \v.
  */
 Melooly.componentURL = 'https://melooly.vercel.app/components/\\l/\\v.canvas';
-/** An object converting the favorite color to a hex value  */
+/** An object converting the favorite color property to a hex value  */
 const primaryColors = {
     0: '#382E2E', // Black
     1: '#FF0040', // Red
     2: '#FF8000', // Orange
     3: '#FFFF00', // Yellow
     4: '#00A82A', // Green
-    5: '#2050DF', // Blue
-    6: '#6040BF', // Purple
-    7: '#FF80DF', // Pink
-    8: '#BFFF00', // Lime
-    9: '#107070', // Teal
-    10: '#00BFFF', // Sky
-    11: '#BF409F', // Fuchsia
-    12: '#804000', // Brown
-    13: '#808000', // Olive
-    14: '#879292', // Gray
-    15: '#F2F3F3' // White
-    // 16: "#800020", // Maroon
-    // 17: "#206030", // Forest
-    // 18: "#200080", // Navy
+    5: '#00BFFF', // Sky
+    6: '#2050DF', // Blue
+    7: '#F2F3F3', // White
+    8: '#879292', // Gray
+    9: '#FF80DF', // Pink
+    10: '#804000', // Brown
+    11: '#808000', // Olive
+    12: '#BFFF00', // Lime
+    13: '#107070', // Teal
+    14: '#6040BF', // Purple
+    15: '#BF409F', // Fuchsia
+    // 17: "#800020", // Maroon
+    // 18: '#D2691E', // Carmel
     // 19: "#EFD790", // Cream
-    // 20: '#D2691E', // Carmel
+    // 20: "#206030", // Forest
+    // 22: "#200080", // Navy
 };
 export { components, primaryColors, MeloolyLauncher, Melooly };
