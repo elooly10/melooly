@@ -6,7 +6,7 @@ import terminalImage from 'terminal-image';
 import { styleText } from "util";
 async function demoTest(launcher) {
     MeloolyLauncher.demoServerURL = 'http://localhost:5173/demoCharacters/';
-    let demos = await launcher.getDemos();
+    let demos = await launcher.getDemos().catch(e => console.log(e));
     if (!demos)
         return;
     await Promise.all(demos.map(d => d.saveSelectedComponents()));

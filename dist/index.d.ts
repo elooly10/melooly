@@ -7,7 +7,7 @@ declare class MeloolyLauncher {
     /** URL of the Demo Melooly database */
     static demoServerURL: string;
     /** Number of Demo Meloolies in the database */
-    static readonly demoCount = 10;
+    static readonly demoCount = 13;
     /** URL of the auth popup */
     static popupURL: string;
     /**
@@ -50,10 +50,7 @@ export type componentRecord = Record<layer, {
 /** Melooly character class. Provides drawing utils for applying to a canvas.
  */
 declare class Melooly {
-    components: Record<layer, {
-        color: string;
-        value: string;
-    }>;
+    components: componentRecord;
     name: string;
     gender: 'M' | 'F' | 'O' | 'P';
     favoriteColor: number;
@@ -71,6 +68,7 @@ declare class Melooly {
     draw(canvas: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D, scale?: number, componentAdjustments?: Partial<typeof this.components>): void;
     /** Draws melooly component at requested scale onto the provided canvas.
      * Canvas needs to be at least 270px × specified scale for component to fit.
+     * @internal Most uses need draw() instead.
      */
     drawComponent(component: {
         layer: layer;
@@ -79,7 +77,11 @@ declare class Melooly {
     }, canvas: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D, scale?: number): void;
     /** Individual component saves. */
     private renders;
-    /** Add drawing instructions for a custom component so it can be used as a feature (e.g. a new eye style) */
+    /** Add drawing instructions for a custom component so it can be used as a feature (e.g. a new eye style)
+     * @param layer the layer this component is (e.g. a eye)
+     * @param name the name of the component (e.g. winkLeft)
+     * @param cff the contents of a .canvas file, with the primary (e.g. iris) color replaced with`\c`.
+     */
     addComponent(layer: layer, name: string, cff: string): Promise<void>;
     /** Save a component drawing instruction from the web */
     fetchComponent(layer: layer, value: string): Promise<void>;

@@ -87,7 +87,8 @@ class MeloolyLauncher {
      * @returns A melooly demo
      */
     async getDemo(demoID = Math.floor(Math.random() * MeloolyLauncher.demoCount)) {
-        let results = await fetch(MeloolyLauncher.demoServerURL + demoID.toString(16).padStart(2, '0') + '.melooly');
+        const url = MeloolyLauncher.demoServerURL + demoID.toString(16).padStart(2, '0').toUpperCase() + '.melooly';
+        let results = await fetch(url);
         if (!results.ok)
             throw { status: results.status, error: results.statusText };
         let characterContents = await results.text();
@@ -110,7 +111,7 @@ MeloolyLauncher.serverURL = 'https://melooly.vercel.app/API/';
 /** URL of the Demo Melooly database */
 MeloolyLauncher.demoServerURL = 'https://melooly.vercel.app/demoCharacters/';
 /** Number of Demo Meloolies in the database */
-MeloolyLauncher.demoCount = 10;
+MeloolyLauncher.demoCount = 13;
 /** URL of the auth popup */
 MeloolyLauncher.popupURL = 'https://melooly.vercel.app/popup/';
 /** Melooly character class. Provides drawing utils for applying to a canvas.
@@ -168,6 +169,7 @@ class Melooly {
     }
     /** Draws melooly component at requested scale onto the provided canvas.
      * Canvas needs to be at least 270px × specified scale for component to fit.
+     * @internal Most uses need draw() instead.
      */
     drawComponent(component, canvas, scale = 1) {
         //Draw it!
@@ -179,7 +181,11 @@ class Melooly {
         let appliedRender = 'begin path\n' + render.replaceAll("\\c", component.color);
         applyCFF(canvas, appliedRender, scale);
     }
-    /** Add drawing instructions for a custom component so it can be used as a feature (e.g. a new eye style) */
+    /** Add drawing instructions for a custom component so it can be used as a feature (e.g. a new eye style)
+     * @param layer the layer this component is (e.g. a eye)
+     * @param name the name of the component (e.g. winkLeft)
+     * @param cff the contents of a .canvas file, with the primary (e.g. iris) color replaced with`\c`.
+     */
     async addComponent(layer, name, cff) {
         this.renders[layer] ??= {};
         this.renders[layer][name] = cff;
@@ -204,7 +210,7 @@ class Melooly {
     }
     /** Delete all saved component drawing instructions */
     async clearSavedComponents() {
-        for (const key of Object.keys(this.renders)) {
+        for (const key of this.renderingOrder) {
             this.renders[key] = {};
         }
     }
