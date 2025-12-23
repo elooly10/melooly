@@ -188,7 +188,7 @@ let components = {
             '#FFD7BF',
             '#FFE5CC'
         ],
-        values: ['normal', 'narrow', 'low', 'lowWide', 'wide', 'high', 'noChinHigh', 'noChin']
+        values: ['normal', 'narrow', 'low', 'lowWide', 'wide', 'high', 'highNarrow', 'noChin']
     },
     mole: {
         colors: [
