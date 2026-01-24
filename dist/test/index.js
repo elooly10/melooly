@@ -26,6 +26,9 @@ async function userTest(launcher) {
         eyes: {
             color: '#ff0000',
             value: 'round'
+        },
+        nose: {
+            color: '#00ff00'
         }
     }, 'test1');
 }
@@ -56,7 +59,7 @@ async function drawSample(melooly, scale, items, filename) {
     console.log(`\n${styleText('cyanBright', melooly.name)} Components: `);
     Object.entries(melooly.components).forEach((entry) => {
         let item = items[entry[0]];
-        console.log(`\t${entry[0].padEnd(12)}: ${styleText('yellow', entry[1].value.padEnd(14))} ${entry[1].color.padEnd(8)} ${item ? styleText('green', `Replaced with ${item.color.padEnd(8)} ${item.value}`) : ''}`);
+        console.log(`\t${entry[0].padEnd(12)}: ${styleText('yellow', entry[1].value.padEnd(14))} ${entry[1].color.padEnd(8)} ${item ? styleText('green', `Replaced with ${(item.color ?? '--').padEnd(8)} ${(item.value ?? '--')}`) : ''}`);
     });
     console.log('');
     writeFileSync(`./test/${filename}.png`, canvas.toBuffer());

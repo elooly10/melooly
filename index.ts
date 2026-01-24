@@ -20,7 +20,7 @@ class MeloolyLauncher {
     /** URL of the Demo Melooly database */
     static demoServerURL: string = 'https://melooly.vercel.app/demoCharacters/';
     /** Number of Demo Meloolies in the database */
-    static readonly demoCount = 13;
+    static readonly demoCount = 16;
     /** URL of the auth popup */
     static popupURL: string = 'https://melooly.vercel.app/popup/';
     /**
@@ -114,6 +114,10 @@ export type componentRecord = Record<layer, {
     color: string;
     value: string;
 }>;
+export type partialComponentRecord = Partial<Record<layer, Partial<{
+    color: string;
+    value: string;
+}>>>;
 /** Melooly character class. Provides drawing utils for applying to a canvas.
  */
 class Melooly {
@@ -161,10 +165,9 @@ class Melooly {
     // Static cff renders will be saved in the package
     /** Draws melooly at requested scale onto the provided canvas.
      * Canvas needs to be at least 270px × specified scale for component to fit. */
-    public draw(canvas: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D, scale: number = 1, componentAdjustments: Partial<typeof this.components> = {}) {
-        const components = { ...this.components, ...componentAdjustments }
+    public draw(canvas: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D, scale: number = 1, componentAdjustments: partialComponentRecord = {}) {
         for (const componentKey of this.renderingOrder) {
-            this.drawComponent({ layer: componentKey, name: components[componentKey].value, color: components[componentKey].color }, canvas, scale)
+            this.drawComponent({ layer: componentKey, name: componentAdjustments[componentKey]?.value ?? this.components[componentKey].value, color: componentAdjustments[componentKey]?.color ?? this.components[componentKey].color }, canvas, scale)
         }
     }
     /** Draws melooly component at requested scale onto the provided canvas.
@@ -285,7 +288,7 @@ const primaryColors: Record<number, string> = {
     7: '#F2F3F3', // White
     8: '#879292', // Gray
     9: '#FF80DF', // Pink
-    10: '#804000', // Brown
+    10: '#704010', // Brown
     11: '#808000', // Olive
     12: '#BFFF00', // Lime
     13: '#107070', // Teal

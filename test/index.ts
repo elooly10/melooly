@@ -1,4 +1,4 @@
-import { componentRecord, layer, Melooly, MeloolyLauncher, primaryColors } from "../index.js";
+import { componentRecord, layer, Melooly, MeloolyLauncher, partialComponentRecord, primaryColors } from "../index.js";
 import { readFileSync, writeFileSync } from "fs"
 import { Canvas, CanvasRenderingContext2D as crc2D } from "canvas"
 import terminalImage from 'terminal-image';
@@ -9,7 +9,7 @@ import { Path2D, applyPath2DToCanvasRenderingContext } from "path2d";
 config({ quiet: true });
 async function userTest(launcher: MeloolyLauncher) {
     let meloolies = await launcher.getMelooly(env.USER_ID!).catch((v) => {
-        console.error(styleText('redBright',`Fetching from user encountered error ${v.status} with message "${v.error}"`));
+        console.error(styleText('redBright', `Fetching from user encountered error ${v.status} with message "${v.error}"`));
         if (v.error == 'Unauthorized User') console.log(`You probably need to navigate to ${MeloolyLauncher.popupURL}${env.MELOOLY_ID} to enable data sharing.`)
     });
     if (!meloolies) return;
@@ -24,6 +24,9 @@ async function userTest(launcher: MeloolyLauncher) {
         eyes: {
             color: '#ff0000',
             value: 'round'
+        },
+        nose: {
+            color: '#00ff00'
         }
     }, 'test1')
 }
@@ -45,17 +48,17 @@ async function test() {
 };
 test()
 
-async function drawSample(melooly: Melooly, scale: number, items: Partial<componentRecord>, filename: string) {
+async function drawSample(melooly: Melooly, scale: number, items: partialComponentRecord, filename: string) {
     let canvas = new Canvas(270 * scale, 270 * scale);
     let context = canvas.getContext('2d') as any as CanvasRenderingContext2D // Convert to HTML canvas
     context.fillStyle = primaryColors[melooly.favoriteColor];
     context.fillRect(0, 0, 270 * scale, 270 * scale);
     melooly.draw(context, scale, items);
 
-    console.log(`\n${styleText('cyanBright', melooly.name) } Components: `);
-    Object.entries(melooly.components).forEach((entry)=>{
+    console.log(`\n${styleText('cyanBright', melooly.name)} Components: `);
+    Object.entries(melooly.components).forEach((entry) => {
         let item = items[entry[0] as layer];
-        console.log(`\t${entry[0].padEnd(12)}: ${styleText('yellow', entry[1].value.padEnd(14))} ${entry[1].color.padEnd(8)} ${item? styleText('green', `Replaced with ${item.color.padEnd(8)} ${item.value}`):''}`)
+        console.log(`\t${entry[0].padEnd(12)}: ${styleText('yellow', entry[1].value.padEnd(14))} ${entry[1].color.padEnd(8)} ${item ? styleText('green', `Replaced with ${(item.color ?? '--').padEnd(8)} ${(item.value ?? '--')}`) : ''}`)
     });
     console.log('')
     writeFileSync(`./test/${filename}.png`, canvas.toBuffer())

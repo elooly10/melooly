@@ -7,7 +7,7 @@ declare class MeloolyLauncher {
     /** URL of the Demo Melooly database */
     static demoServerURL: string;
     /** Number of Demo Meloolies in the database */
-    static readonly demoCount = 13;
+    static readonly demoCount = 16;
     /** URL of the auth popup */
     static popupURL: string;
     /**
@@ -47,6 +47,10 @@ export type componentRecord = Record<layer, {
     color: string;
     value: string;
 }>;
+export type partialComponentRecord = Partial<Record<layer, Partial<{
+    color: string;
+    value: string;
+}>>>;
 /** Melooly character class. Provides drawing utils for applying to a canvas.
  */
 declare class Melooly {
@@ -65,7 +69,7 @@ declare class Melooly {
     readonly renderingOrder: layer[];
     /** Draws melooly at requested scale onto the provided canvas.
      * Canvas needs to be at least 270px × specified scale for component to fit. */
-    draw(canvas: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D, scale?: number, componentAdjustments?: Partial<typeof this.components>): void;
+    draw(canvas: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D, scale?: number, componentAdjustments?: partialComponentRecord): void;
     /** Draws melooly component at requested scale onto the provided canvas.
      * Canvas needs to be at least 270px × specified scale for component to fit.
      * @internal Most uses need draw() instead.

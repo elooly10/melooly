@@ -111,7 +111,7 @@ MeloolyLauncher.serverURL = 'https://melooly.vercel.app/API/';
 /** URL of the Demo Melooly database */
 MeloolyLauncher.demoServerURL = 'https://melooly.vercel.app/demoCharacters/';
 /** Number of Demo Meloolies in the database */
-MeloolyLauncher.demoCount = 13;
+MeloolyLauncher.demoCount = 16;
 /** URL of the auth popup */
 MeloolyLauncher.popupURL = 'https://melooly.vercel.app/popup/';
 /** Melooly character class. Provides drawing utils for applying to a canvas.
@@ -162,9 +162,8 @@ class Melooly {
     /** Draws melooly at requested scale onto the provided canvas.
      * Canvas needs to be at least 270px × specified scale for component to fit. */
     draw(canvas, scale = 1, componentAdjustments = {}) {
-        const components = { ...this.components, ...componentAdjustments };
         for (const componentKey of this.renderingOrder) {
-            this.drawComponent({ layer: componentKey, name: components[componentKey].value, color: components[componentKey].color }, canvas, scale);
+            this.drawComponent({ layer: componentKey, name: componentAdjustments[componentKey]?.value ?? this.components[componentKey].value, color: componentAdjustments[componentKey]?.color ?? this.components[componentKey].color }, canvas, scale);
         }
     }
     /** Draws melooly component at requested scale onto the provided canvas.
@@ -283,7 +282,7 @@ const primaryColors = {
     7: '#F2F3F3', // White
     8: '#879292', // Gray
     9: '#FF80DF', // Pink
-    10: '#804000', // Brown
+    10: '#704010', // Brown
     11: '#808000', // Olive
     12: '#BFFF00', // Lime
     13: '#107070', // Teal
