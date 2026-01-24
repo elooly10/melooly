@@ -16,167 +16,167 @@ let hairColors = [
 let components = {
     hair: {
         colors: hairColors,
-        values:    [
-        {
-            front: 'A/normal',
-            back: 'A/normal'
-        },
-        {
-            front: 'A/normal',
-            back: 'A/short'
-        },
-        {
-            front: 'A/normal',
-            back: 'A/small'
-        },
-        {
-            front: 'A/raised',
-            back: 'A/very small'
-        },
-        {
-            front: 'A/small',
-            back: 'A/normal'
-        },
-        {
-            front: 'A/small',
-            back: 'A/short'
-        },
-        {
-            front: 'A/small',
-            back: 'A/small'
-        },
-        {
-            front: 'A/small',
-            back: 'C'
-        },
-        {
-            front: 'B',
-            back: 'A/normal'
-        },
-        {
-            front: 'B',
-            back: 'C'
-        },
-        {
-            front: 'B',
-            back: 'A/short'
-        },
-        {
-            front: 'B',
-            back: 'B'
-        },
+        values: [
+            {
+                front: 'A/normal',
+                back: 'A/normal'
+            },
+            {
+                front: 'A/normal',
+                back: 'A/short'
+            },
+            {
+                front: 'A/normal',
+                back: 'A/small'
+            },
+            {
+                front: 'A/raised',
+                back: 'A/very small'
+            },
+            {
+                front: 'A/small',
+                back: 'A/normal'
+            },
+            {
+                front: 'A/small',
+                back: 'A/short'
+            },
+            {
+                front: 'A/small',
+                back: 'A/small'
+            },
+            {
+                front: 'A/small',
+                back: 'C'
+            },
+            {
+                front: 'B',
+                back: 'A/normal'
+            },
+            {
+                front: 'B',
+                back: 'C'
+            },
+            {
+                front: 'B',
+                back: 'A/short'
+            },
+            {
+                front: 'B',
+                back: 'B'
+            },
 
-        {
-            front: 'D/normal',
-            back: 'C'
-        },
-        {
-            front: 'D/normal',
-            back: 'D/normal'
-        },
-        {
-            front: 'D/normal',
-            back: 'D/long'
-        },
-        {
-            front: 'D/normal',
-            back: 'D/short'
-        },
-        {
-            front: 'D/alt',
-            back: 'A/short'
-        },
-        {
-            front: 'D/alt',
-            back: 'D/normal'
-        },
-        {
-            front: 'D/alt',
-            back: 'D/long'
-        },
-        {
-            front: 'D/alt',
-            back: 'D/short'
-        },
-        {
-            front: 'E/normal',
-            back: 'E/normal'
-        },
-        {
-            front: 'E/normal',
-            back: 'E/large'
-        },
-        {
-            front: 'E/high',
-            back: 'E/normal'
-        },
-        {
-            front: 'G/normal',
-            back: 'E/large'
-        },
-        {
-            front: 'D/alt',
-            back: 'F/normal'
-        },
-        {
-            front: 'D/alt',
-            back: 'F/short'
-        },
-        {
-            front: 'E/normal',
-            back: 'F/normal'
-        },
-        {
-            front: 'G/normal',
-            back: 'F/short'
-        },
-        {
-            front: 'G/normal',
-            back: 'A/normal'
-        },
-        {
-            front: 'G/high',
-            back: 'A/normal'
-        },
-        {
-            front: 'G/normal',
-            back: 'I'
-        }, 
-        {
-            front: 'G/high',
-            back: 'I'
-        },
-        {
-            front: 'G/normal',
-            back: 'G/normal'
-        },
-        {
-            front: 'G/high',
-            back: 'G/normal'
-        }, {
-            front: 'G/ultrahigh',
-            back: 'G/normal'
-        },
-        {
-            front: 'B',
-            back: 'G/alt'
-        },
-        {
-            front: 'A/small',
-            back: 'H'
-        },
-        {
-            front: 'D/normal',
-            back: 'H'
-        },
-        {
-            front: 'D/alt',
-            back: 'H'
-        },
-        {
-            front: 'E/high',
-            back: 'H'
-        },
+            {
+                front: 'D/normal',
+                back: 'C'
+            },
+            {
+                front: 'D/normal',
+                back: 'D/normal'
+            },
+            {
+                front: 'D/normal',
+                back: 'D/long'
+            },
+            {
+                front: 'D/normal',
+                back: 'D/short'
+            },
+            {
+                front: 'D/alt',
+                back: 'A/short'
+            },
+            {
+                front: 'D/alt',
+                back: 'D/normal'
+            },
+            {
+                front: 'D/alt',
+                back: 'D/long'
+            },
+            {
+                front: 'D/alt',
+                back: 'D/short'
+            },
+            {
+                front: 'E/normal',
+                back: 'E/normal'
+            },
+            {
+                front: 'E/normal',
+                back: 'E/large'
+            },
+            {
+                front: 'E/high',
+                back: 'E/normal'
+            },
+            {
+                front: 'G/normal',
+                back: 'E/large'
+            },
+            {
+                front: 'D/alt',
+                back: 'F/normal'
+            },
+            {
+                front: 'D/alt',
+                back: 'F/short'
+            },
+            {
+                front: 'E/normal',
+                back: 'F/normal'
+            },
+            {
+                front: 'G/normal',
+                back: 'F/short'
+            },
+            {
+                front: 'G/normal',
+                back: 'A/normal'
+            },
+            {
+                front: 'G/high',
+                back: 'A/normal'
+            },
+            {
+                front: 'G/normal',
+                back: 'I'
+            },
+            {
+                front: 'G/high',
+                back: 'I'
+            },
+            {
+                front: 'G/normal',
+                back: 'G/normal'
+            },
+            {
+                front: 'G/high',
+                back: 'G/normal'
+            }, {
+                front: 'G/ultrahigh',
+                back: 'G/normal'
+            },
+            {
+                front: 'B',
+                back: 'G/alt'
+            },
+            {
+                front: 'A/small',
+                back: 'H'
+            },
+            {
+                front: 'D/normal',
+                back: 'H'
+            },
+            {
+                front: 'D/alt',
+                back: 'H'
+            },
+            {
+                front: 'E/high',
+                back: 'H'
+            },
         ]
     },
     head: {
@@ -200,7 +200,7 @@ let components = {
             '#693F3F',
             '#996673',
         ],
-        values: ['left', 'right', '']
+        values: ['', 'left', 'right']
     },
     blush: {
         colors: [
@@ -209,7 +209,7 @@ let components = {
             '#A3662966',
             '#C651394D'
         ],
-        values: ['blush', '']
+        values: ['', 'blush']
     },
     eyes: {
         colors: [
@@ -226,7 +226,7 @@ let components = {
         values: ['normal', 'oval', 'round', 'circle', 'tired', 'wink', 'blink']
     },
     nose: {
-        colors: [],
+        colors: [] as string[],
         values: [
             'normal',
             'narrow',
