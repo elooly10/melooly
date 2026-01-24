@@ -23,21 +23,23 @@ async function test() {
 	await demoTest(launcher);
 };
 test()
-
-async function drawSample(melooly: Melooly, scale: number, items: Partial<componentRecord>, filename: string) {
-	let canvas = new Canvas(270 * scale, 270 * scale);
+function drawOntoCanvas(canvas: Canvas, melooly: Melooly, scale: number, items: Partial<componentRecord>) {
 	let context = canvas.getContext('2d') as any as CanvasRenderingContext2D // Convert to HTML canvas
 	context.fillStyle = primaryColors[melooly.favoriteColor];
 	context.fillRect(0, 0, 270 * scale, 270 * scale);
 	melooly.draw(context, scale, items);
+	return canvas.toBuffer();
+}
+async function drawSample(melooly: Melooly, scale: number, items: Partial<componentRecord>, filename: string) {
+	let canvas = new Canvas(270 * scale, 270 * scale);
 
 	console.log(`\n${styleText('cyanBright', melooly.name)} Components: `);
 	Object.entries(melooly.components).forEach((entry) => {
 		let item = items[entry[0] as layer];
 		console.log(`\t${entry[0].padEnd(12)}: ${styleText('yellow', entry[1].value.padEnd(14))} ${entry[1].color.padEnd(8)} ${item ? styleText('green', `Replaced with ${item.color.padEnd(8)} ${item.value}`) : ''}`)
 	});
-	writeFileSync(`./test/demoImages/${filename}.png`, canvas.toBuffer())
-	console.log(await terminalImage.file(`./test/demoImages/${filename}.png`, { width: '50%', height: '50%' }))
+	writeFileSync(`./test/demoImages/${filename}.png`, drawOntoCanvas(canvas, melooly, scale, items))
+	console.log(await terminalImage.file(`./test/demoImages/${filename}.png`, { width: 50, height: 50 }))
 }
 
 function generateReport(demos: Melooly[]) {

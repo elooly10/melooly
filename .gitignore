@@ -3,3 +3,5 @@ node_modules
 .env
 test/demoImages
 test/demo_report.rtf
+test/*.png
+test/test1.png

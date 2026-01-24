@@ -23,7 +23,7 @@ declare let components: {
         values: string[];
     };
     nose: {
-        colors: never[];
+        colors: string[];
         values: string[];
     };
     mouth: {

@@ -196,7 +196,7 @@ let components = {
             '#693F3F',
             '#996673',
         ],
-        values: ['left', 'right', '']
+        values: ['', 'left', 'right']
     },
     blush: {
         colors: [
@@ -205,7 +205,7 @@ let components = {
             '#A3662966',
             '#C651394D'
         ],
-        values: ['blush', '']
+        values: ['', 'blush']
     },
     eyes: {
         colors: [
