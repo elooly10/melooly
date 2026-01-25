@@ -107,13 +107,13 @@ class MeloolyLauncher {
     ;
 }
 /** URL of the server that sends meloolies. */
-MeloolyLauncher.serverURL = 'https://melooly.vercel.app/API/';
+MeloolyLauncher.serverURL = 'https://me.elooly.com/API/';
 /** URL of the Demo Melooly database */
-MeloolyLauncher.demoServerURL = 'https://melooly.vercel.app/demoCharacters/';
+MeloolyLauncher.demoServerURL = 'https://me.elooly.com/demoCharacters/';
 /** Number of Demo Meloolies in the database */
 MeloolyLauncher.demoCount = 16;
 /** URL of the auth popup */
-MeloolyLauncher.popupURL = 'https://melooly.vercel.app/popup/';
+MeloolyLauncher.popupURL = 'https://me.elooly.com/popup/';
 /** Melooly character class. Provides drawing utils for applying to a canvas.
  */
 class Melooly {
@@ -269,7 +269,7 @@ class Melooly {
 /** URL all Meloolies load components from. Defaults to melooly website.
  * Layer is represented with \l, and value \v.
  */
-Melooly.componentURL = 'https://melooly.vercel.app/components/\\l/\\v.canvas';
+Melooly.componentURL = 'https://me.elooly.com/components/\\l/\\v.canvas';
 /** An object converting the favorite color property to a hex value  */
 const primaryColors = {
     0: '#382E2E', // Black

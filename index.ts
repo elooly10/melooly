@@ -16,13 +16,13 @@ class MeloolyLauncher {
     private key: string;
     private websiteID: string;
     /** URL of the server that sends meloolies. */
-    static serverURL: string = 'https://melooly.vercel.app/API/';
+    static serverURL: string = 'https://me.elooly.com/API/';
     /** URL of the Demo Melooly database */
-    static demoServerURL: string = 'https://melooly.vercel.app/demoCharacters/';
+    static demoServerURL: string = 'https://me.elooly.com/demoCharacters/';
     /** Number of Demo Meloolies in the database */
     static readonly demoCount = 16;
     /** URL of the auth popup */
-    static popupURL: string = 'https://melooly.vercel.app/popup/';
+    static popupURL: string = 'https://me.elooly.com/popup/';
     /**
      * Creates a launcher with requested information
      * @param websiteID the ID of your API Key (not the key itself)
@@ -145,7 +145,7 @@ class Melooly {
     /** URL all Meloolies load components from. Defaults to melooly website.
      * Layer is represented with \l, and value \v.
      */
-    static componentURL = 'https://melooly.vercel.app/components/\\l/\\v.canvas'
+    static componentURL = 'https://me.elooly.com/components/\\l/\\v.canvas'
     /** Creates a melooly from a melooly save file */
     constructor(file: string) {
         this.importFile(file)
