@@ -1,7 +1,33 @@
 # Melooly
-## This is a work in progress
-Do not use. Not yet ready for production. Things may change at any moment.
+NPM package for using (Meloolies)[https://me.elooly.com] in Node.js projects.
 
-Anyways, the `Melooly` class it surfaces can create characters from components, save them, and more.
+## Installation
+```bash
+npm i melooly
+```
 
-If you want to use it (why?) you should look at test.ts for an example of how to use the code.
+You will need to sign up (online)[https://me.elooly.com] to get an API key and website ID. 
+
+## Documentation
+See (https://me.elooly.com/docs)[https://me.elooly.com/docs] for developer documentation.
+
+### Sample program
+```ts
+    // Get Meloolies from a user and draw the primary Melooly to a canvas
+    const launcher = new MeloolyLauncher();
+    uid = await launcher.initiatePopup(); // Get User ID with popup
+    if (!uid) return;
+    const meloolies = await launcher.getMelooly(uid).catch((err) => console.error(err)); // Fetch user's meloolies.
+    if (!meloolies) return;
+
+    // Prepare Canvas
+    const canvas = document.createElement('canvas');
+    canvas.width = 270;
+    canvas.height = 270;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Draw Melooly onto canvas
+    await meloolies[0].saveSelectedComponents(); // Save current Melooly's components
+    meloolies[0].draw(ctx); // Canvas contains Melooly instance
+```
