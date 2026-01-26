@@ -33,14 +33,16 @@ function drawOntoCanvas(canvas, melooly, scale, items) {
     return canvas.toBuffer();
 }
 async function drawSample(melooly, scale, items, filename) {
-    let canvas = new Canvas(270 * scale, 270 * scale);
+    let fileType = 'png';
+    let canvas = new Canvas(270 * scale, 270 * scale, fileType == 'png' ? 'image' : 'svg');
     console.log(`\n${styleText('cyanBright', melooly.name)} Components: `);
     Object.entries(melooly.components).forEach((entry) => {
         let item = items[entry[0]];
         console.log(`\t${entry[0].padEnd(12)}: ${styleText('yellow', entry[1].value.padEnd(14))} ${entry[1].color.padEnd(8)} ${item ? styleText('green', `Replaced with ${item.color.padEnd(8)} ${item.value}`) : ''}`);
     });
-    writeFileSync(`./test/demoImages/${filename}.png`, drawOntoCanvas(canvas, melooly, scale, items));
-    console.log(await terminalImage.file(`./test/demoImages/${filename}.png`, { width: 50, height: 50 }));
+    writeFileSync(`./test/demoImages/${filename}.${fileType}`, drawOntoCanvas(canvas, melooly, scale, items));
+    if (fileType == 'png')
+        console.log(await terminalImage.file(`./test/demoImages/${filename}.png`, { width: 50, height: 50 }));
 }
 function generateReport(demos) {
     // Initialize stats container

@@ -1,14 +1,15 @@
 {
 	"name": "melooly",
 	"version": "0.0.8",
-	"description": "TBD",
+	"description": "JavaScript library for interacting with the Melooly API",
 	"license": "ISC",
 	"author": "elooly",
 	"type": "module",
 	"main": "./dist/index.js",
 	"scripts": {
 		"test": "tsc && node ./dist/test/index.js",
-		"prepare": "tsc"
+		"prepare": "tsc",
+		"prepublishOnly": "echo \"Remember to commit changes\""
 	},
 	"devDependencies": {
 		"@types/node": "^24.10.1",
