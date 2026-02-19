@@ -16,8 +16,8 @@ function getRandomNumbers(count, max) {
 class MeloolyLauncher {
     /**
      * Creates a launcher with requested information
-     * @param websiteID the ID of your API Key (not the key itself)
-     * @param key the API Key, as administered on the website. These expire annually and will require a code update.
+     * @param websiteID The ID of your website, from https://me.elooly.com/dev
+     * @param key The API Key, from https://me.elooly.com/dev. These expire annually and will require a code update.
      */
     constructor(websiteID, key) {
         this.key = key;
@@ -66,7 +66,7 @@ class MeloolyLauncher {
      * @see MeloolyLauncher.initiatePopup for how to get the userID
      */
     async getMelooly(userID) {
-        let results = await fetch(MeloolyLauncher.serverURL + userID, {
+        let results = await fetch(MeloolyLauncher.serverURL + userID + '/', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${this.key}`,
@@ -190,22 +190,14 @@ class Melooly {
         this.renders[layer][name] = cff;
     }
     /** Save a component drawing instruction from the web */
-    async fetchComponent(layer, value) {
+    async saveComponent(layer, value) {
         // Fetch from the web
-        try {
-            let result = await fetch(Melooly.componentURL.replaceAll('\\l', layer).replaceAll('\\v', value));
-            if (!result.ok)
-                throw { status: result.status, description: result.statusText, url: result.url };
-            let render = await result.text();
-            // Add to renders 
-            this.addComponent(layer, value, render);
-        }
-        catch (error) {
-            if (error.status)
-                console.error(`Server Error ${error.status}: ${error.description} (url ${error.url})`);
-            else
-                console.error(error);
-        }
+        let result = await fetch(Melooly.componentURL.replaceAll('\\l', layer).replaceAll('\\v', value));
+        if (!result.ok)
+            throw { status: result.status, description: result.statusText, url: result.url };
+        let render = await result.text();
+        // Add to renders 
+        this.addComponent(layer, value, render);
     }
     /** Delete all saved component drawing instructions */
     async clearSavedComponents() {
@@ -217,7 +209,7 @@ class Melooly {
     async saveSelectedComponents() {
         let componentPromises = [];
         for (const entry of Object.entries(this.components)) {
-            componentPromises.push(this.fetchComponent(entry[0], entry[1].value));
+            componentPromises.push(this.saveComponent(entry[0], entry[1].value));
         }
         await Promise.allSettled(componentPromises);
     }
@@ -234,14 +226,14 @@ class Melooly {
         let componentPromises = [];
         for (let entry of entries) {
             if (entry[0] != 'hair') {
-                componentPromises.push(...entry[1].values.map((value) => this.fetchComponent(entry[0], value)));
+                componentPromises.push(...entry[1].values.map((value) => this.saveComponent(entry[0], value)));
             }
         }
         // Handle hair
         let hairFronts = new Set(components.hair.values.map(e => e.front));
         let hairBacks = new Set(components.hair.values.map(e => e.back));
-        componentPromises.push(...new Array(...hairFronts).map((value) => this.fetchComponent('hair/front', value)));
-        componentPromises.push(...new Array(...hairBacks).map((value) => (this.fetchComponent('hair/back', value))));
+        componentPromises.push(...new Array(...hairFronts).map((value) => this.saveComponent('hair/front', value)));
+        componentPromises.push(...new Array(...hairBacks).map((value) => (this.saveComponent('hair/back', value))));
         // Load!
         await Promise.allSettled(componentPromises);
     }

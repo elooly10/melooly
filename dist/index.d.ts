@@ -12,8 +12,8 @@ declare class MeloolyLauncher {
     static popupURL: string;
     /**
      * Creates a launcher with requested information
-     * @param websiteID the ID of your API Key (not the key itself)
-     * @param key the API Key, as administered on the website. These expire annually and will require a code update.
+     * @param websiteID The ID of your website, from https://me.elooly.com/dev
+     * @param key The API Key, from https://me.elooly.com/dev. These expire annually and will require a code update.
      */
     constructor(websiteID: string, key: string);
     /**
@@ -88,7 +88,7 @@ declare class Melooly {
      */
     addComponent(layer: layer, name: string, cff: string): Promise<void>;
     /** Save a component drawing instruction from the web */
-    fetchComponent(layer: layer, value: string): Promise<void>;
+    saveComponent(layer: layer, value: string): Promise<void>;
     /** Delete all saved component drawing instructions */
     clearSavedComponents(): Promise<void>;
     /** Save drawing instructions for currently used components */

@@ -74,7 +74,7 @@ class MeloolyLauncher {
      * @see MeloolyLauncher.initiatePopup for how to get the userID
      */
     public async getMelooly(userID: string): Promise<Melooly[]> {
-        let results = await fetch(MeloolyLauncher.serverURL + userID, {
+        let results = await fetch(MeloolyLauncher.serverURL + userID + '/', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${this.key}`,
