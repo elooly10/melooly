@@ -21,6 +21,6 @@
 		"typescript": "^5.9.3"
 	},
 	"dependencies": {
-		"canvasff": "^0.1.0"
+		"canvasff": "^0.1.1"
 	}
 }
