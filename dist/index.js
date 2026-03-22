@@ -1,17 +1,17 @@
 import components from "./components.js";
 import { applyCFF } from "canvasff";
 function getRandomNumbers(count, max) {
-    if (count > max)
-        return [];
-    let numbers = [];
-    for (let i = 0; i < count; i++) {
-        let number;
-        do {
-            number = Math.floor(Math.random() * max);
-        } while (numbers.includes(number));
-        numbers.push(number);
+    // for i from n − 2 down to 0 do
+    //  j ← random integer such that i ≤ j ≤ n − 1
+    //  exchange a[i] and a[j]
+    const fullSet = Array.from({ length: max }, (_, i) => i);
+    for (let i = max - 2; i >= 0; i--) {
+        const item = fullSet[i];
+        const j = Math.floor(Math.random() * (max - i)) + i;
+        fullSet[i] = fullSet[j];
+        fullSet[j] = item;
     }
-    return numbers;
+    return fullSet.slice(0, count);
 }
 class MeloolyLauncher {
     /**
@@ -24,7 +24,8 @@ class MeloolyLauncher {
         this.websiteID = websiteID;
     }
     /**
-     * Creates a popup for user authentication
+     * Creates a popup for user authentication.
+     * Browsers may block the popup.
      * @param monitorSpeed The speed at which popup close events are monitored, in milliseconds. Defaults to 100ms.
      * @returns A promise resolving to user ID, or null, if the user selects not to share
      */
@@ -73,12 +74,16 @@ class MeloolyLauncher {
                 'Content-Type': 'application/json'
             }
         });
-        // if (!results.ok) throw { status: results.status, error: results.statusText };
-        let json = await results.json();
-        if (!Array.isArray(json))
-            throw { status: results.status, error: json.message };
-        else
-            return json.map((v) => new Melooly(v));
+        try {
+            let json = await results.json();
+            if (!Array.isArray(json))
+                throw { status: results.status, error: json.message };
+            else
+                return json.map((v) => new Melooly(v));
+        }
+        catch (e) {
+            throw { status: results.status, error: results.statusText };
+        }
     }
     ;
     /**
@@ -120,10 +125,12 @@ class Melooly {
     /** Import savefile to melooly */
     importFile(file) {
         file.split("\n").forEach((element, i) => {
+            if (element.length == 0)
+                return;
             let contents = element.split("\t");
             if (i == 0) {
                 this.name = contents[0];
-                this.favoriteColor = parseInt(contents[1]);
+                this.favoriteColor = parseInt(contents[1]) ?? 0;
                 this.gender = contents[2] ?? 'P';
             }
             else {
@@ -219,7 +226,10 @@ class Melooly {
             clone.renders[layer[0]] = { ...layer[1], ...clone.renders[layer[0]] };
         });
     }
-    /** Saves all component drawing instructions from the web */
+    /**
+     * Saves all component drawing instructions from the web
+     * Most uses should use saveComponent or saveSelectedComponents.
+    */
     async saveAllComponents() {
         // Handle non-hair features
         let entries = Object.entries(components);

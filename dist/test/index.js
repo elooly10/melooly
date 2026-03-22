@@ -13,7 +13,7 @@ async function userTest(launcher) {
         if (v.error == 'Unauthorized User')
             console.log(`You probably need to navigate to ${MeloolyLauncher.popupURL}${env.MELOOLY_ID} to enable data sharing.`);
     });
-    if (!meloolies)
+    if (!meloolies || !meloolies.length)
         return;
     await meloolies[0].saveAllComponents();
     //await melooly.prepareComponents();
@@ -33,11 +33,13 @@ async function userTest(launcher) {
     }, 'test1');
 }
 async function demoTest(launcher) {
-    let demo = await launcher.getDemos(1).catch(v => console.error(v));
-    if (!demo)
+    let demos = await launcher.getDemos(1).catch(v => console.error(v));
+    if (!demos)
         return;
-    await demo[0].saveSelectedComponents();
-    await drawSample(demo[0], 1.5, {}, 'test2');
+    for (const demo of demos) {
+        await demo.saveSelectedComponents();
+        await drawSample(demo, 1.5, {}, 'test2');
+    }
 }
 async function test() {
     // Apply polyfills

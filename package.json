@@ -1,6 +1,6 @@
 {
 	"name": "melooly",
-	"version": "0.0.9",
+	"version": "1.0.0",
 	"description": "JavaScript library for interacting with the Melooly API",
 	"license": "ISC",
 	"author": "elooly",

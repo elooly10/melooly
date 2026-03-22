@@ -17,7 +17,8 @@ declare class MeloolyLauncher {
      */
     constructor(websiteID: string, key: string);
     /**
-     * Creates a popup for user authentication
+     * Creates a popup for user authentication.
+     * Browsers may block the popup.
      * @param monitorSpeed The speed at which popup close events are monitored, in milliseconds. Defaults to 100ms.
      * @returns A promise resolving to user ID, or null, if the user selects not to share
      */
@@ -95,7 +96,10 @@ declare class Melooly {
     saveSelectedComponents(): Promise<void>;
     /** Apply saved components to another melooly */
     copySavedComponents(clone: Melooly): void;
-    /** Saves all component drawing instructions from the web */
+    /**
+     * Saves all component drawing instructions from the web
+     * Most uses should use saveComponent or saveSelectedComponents.
+    */
     saveAllComponents(): Promise<void>;
     /** Convert melooly to string representation, which can be used to instantiate more Melooly classes */
     toSavefile(): string;
